@@ -4,5 +4,13 @@
 format: jb-book
 root: intro
 chapters:
-- file: markdown
-- file: notebooks
+- file: notebooks/1_PPCA.ipynb
+- file: notebooks/2_LDDMM.ipynb
+- file: notebooks/3_UMAP.ipynb
+- file: notebooks/4_AE.ipynb
+- file: notebooks/5_EBM.ipynb
+- file: notebooks/6_VAE.ipynb
+- file: notebooks/7_NAF.ipynb
+- file: notebooks/8_SNF.ipynb
+- file: notebooks/9_VAEF.ipynb
+- file: notebooks/X_MFLOW.ipynb

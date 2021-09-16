@@ -1,0 +1,108 @@
+/home/bawaw/.conda/envs/nflows/lib/python3.8/site-packages/jupyter_server_mathjax/app.py:40: FutureWarning: The alias `_()` will be deprecated. Use `_i18n()` instead.
+  help=_("""The MathJax.js configuration file that is to be used."""),
+[I 2021-09-16 11:28:32.131 ServerApp] jupyter_server_mathjax | extension was successfully linked.
+[I 2021-09-16 11:28:32.138 ServerApp] jupyterlab | extension was successfully linked.
+[I 2021-09-16 11:28:32.138 ServerApp] jupytext | extension was successfully linked.
+[I 2021-09-16 11:28:32.234 ServerApp] nbclassic | extension was successfully linked.
+[I 2021-09-16 11:28:32.234 ServerApp] nbdime | extension was successfully linked.
+[I 2021-09-16 11:28:32.260 ServerApp] nbclassic | extension was successfully loaded.
+[I 2021-09-16 11:28:32.261 ServerApp] jupyter_server_mathjax | extension was successfully loaded.
+[I 2021-09-16 11:28:32.261 LabApp] JupyterLab extension loaded from /home/bawaw/.conda/envs/nflows/lib/python3.8/site-packages/jupyterlab
+[I 2021-09-16 11:28:32.262 LabApp] JupyterLab application directory is /home/bawaw/.conda/envs/nflows/share/jupyter/lab
+[I 2021-09-16 11:28:32.264 ServerApp] jupyterlab | extension was successfully loaded.
+[I 2021-09-16 11:28:32.264 ServerApp] [Jupytext Server Extension] Deriving a JupytextContentsManager from LargeFileManager
+[I 2021-09-16 11:28:32.264 ServerApp] jupytext | extension was successfully loaded.
+[I 2021-09-16 11:28:32.303 ServerApp] nbdime | extension was successfully loaded.
+[I 2021-09-16 11:28:32.303 ServerApp] The port 8888 is already in use, trying another port.
+[I 2021-09-16 11:28:32.304 ServerApp] Serving notebooks from local directory: /media/alpha/Projects/pdm_tutorial/jupyter_book/notebooks
+[I 2021-09-16 11:28:32.304 ServerApp] Jupyter Server 1.11.0 is running at:
+[I 2021-09-16 11:28:32.304 ServerApp] http://localhost:8889/lab?token=a20363a55b51dd268fd554860728c6fa059fae4f435d8cb0
+[I 2021-09-16 11:28:32.304 ServerApp]  or http://127.0.0.1:8889/lab?token=a20363a55b51dd268fd554860728c6fa059fae4f435d8cb0
+[I 2021-09-16 11:28:32.304 ServerApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 2021-09-16 11:28:32.358 ServerApp] 
+    
+    To access the server, open this file in a browser:
+        file:///home/bawaw/.local/share/jupyter/runtime/jpserver-8401-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8889/lab?token=a20363a55b51dd268fd554860728c6fa059fae4f435d8cb0
+     or http://127.0.0.1:8889/lab?token=a20363a55b51dd268fd554860728c6fa059fae4f435d8cb0
+[I 2021-09-16 11:28:35.498 LabApp] Build is up to date
+[W 2021-09-16 11:28:58.358 ServerApp] Notebook 1_PPCA.ipynb is not trusted
+[I 2021-09-16 11:28:58.722 ServerApp] Kernel started: 3ee0e7d4-73d0-4628-a506-71b235304567
+[W 2021-09-16 11:29:22.419 ServerApp] Notebook 2_LDDMM.ipynb is not trusted
+[I 2021-09-16 11:29:22.608 ServerApp] Kernel started: 6364bb09-838d-48da-9bb9-001ee4ccc589
+[I 2021-09-16 11:30:59.190 ServerApp] Saving file at /1_PPCA.ipynb
+[I 2021-09-16 11:30:59.191 ServerApp] Saving 1_PPCA.ipynb
+[I 2021-09-16 11:31:23.187 ServerApp] Saving file at /2_LDDMM.ipynb
+[I 2021-09-16 11:31:23.188 ServerApp] Saving 2_LDDMM.ipynb
+[I 2021-09-16 11:33:00.181 ServerApp] Saving file at /1_PPCA.ipynb
+[I 2021-09-16 11:33:00.182 ServerApp] Saving 1_PPCA.ipynb
+[I 2021-09-16 11:34:46.812 ServerApp] Kernel shutdown: 6364bb09-838d-48da-9bb9-001ee4ccc589
+[W 2021-09-16 11:34:46.814 ServerApp] delete /3_UMAP.ipynb
+[W 2021-09-16 11:34:46.814 ServerApp] Skipping trash for /media/alpha/Projects/pdm_tutorial/jupyter_book/notebooks/3_UMAP.ipynb, on different device to home directory
+[W 2021-09-16 11:34:46.815 ServerApp] delete /4_AE.ipynb
+[W 2021-09-16 11:34:46.815 ServerApp] Skipping trash for /media/alpha/Projects/pdm_tutorial/jupyter_book/notebooks/4_AE.ipynb, on different device to home directory
+[W 2021-09-16 11:34:46.819 ServerApp] delete /5_EBM.ipynb
+[W 2021-09-16 11:34:46.819 ServerApp] Skipping trash for /media/alpha/Projects/pdm_tutorial/jupyter_book/notebooks/5_EBM.ipynb, on different device to home directory
+[W 2021-09-16 11:34:46.821 ServerApp] delete /5_EBM (copy).ipynb
+[W 2021-09-16 11:34:46.821 ServerApp] Skipping trash for /media/alpha/Projects/pdm_tutorial/jupyter_book/notebooks/5_EBM (copy).ipynb, on different device to home directory
+[W 2021-09-16 11:34:46.934 ServerApp] delete /2_LDDMM.ipynb
+[W 2021-09-16 11:34:46.934 ServerApp] Skipping trash for /media/alpha/Projects/pdm_tutorial/jupyter_book/notebooks/2_LDDMM.ipynb, on different device to home directory
+[I 2021-09-16 11:34:49.682 ServerApp] Copying 1_PPCA.ipynb to 
+[W 2021-09-16 11:34:49.685 ServerApp] Notebook 1_PPCA.ipynb is not trusted
+[I 2021-09-16 11:34:49.687 ServerApp] Saving 1_PPCA-Copy1.ipynb
+[I 2021-09-16 11:34:52.776 ServerApp] Copying 1_PPCA.ipynb to 
+[I 2021-09-16 11:34:52.792 ServerApp] Saving 1_PPCA-Copy2.ipynb
+[I 2021-09-16 11:35:00.330 ServerApp] Saving file at /1_PPCA.ipynb
+[I 2021-09-16 11:35:00.331 ServerApp] Saving 1_PPCA.ipynb
+[I 2021-09-16 11:35:05.887 ServerApp] Copying 1_PPCA-Copy1.ipynb to 
+[I 2021-09-16 11:35:05.900 ServerApp] Saving 1_PPCA-Copy3.ipynb
+[I 2021-09-16 11:35:08.095 ServerApp] Copying 1_PPCA-Copy1.ipynb to 
+[I 2021-09-16 11:35:08.107 ServerApp] Saving 1_PPCA-Copy4.ipynb
+[I 2021-09-16 11:35:09.231 ServerApp] Copying 1_PPCA-Copy1.ipynb to 
+[I 2021-09-16 11:35:09.243 ServerApp] Saving 1_PPCA-Copy5.ipynb
+[I 2021-09-16 11:35:10.223 ServerApp] Copying 1_PPCA-Copy1.ipynb to 
+[I 2021-09-16 11:35:10.235 ServerApp] Saving 1_PPCA-Copy6.ipynb
+[I 2021-09-16 11:35:11.774 ServerApp] Copying 1_PPCA-Copy1.ipynb to 
+[I 2021-09-16 11:35:11.787 ServerApp] Saving 1_PPCA-Copy7.ipynb
+[I 2021-09-16 11:35:12.639 ServerApp] Copying 1_PPCA-Copy1.ipynb to 
+[I 2021-09-16 11:35:12.651 ServerApp] Saving 1_PPCA-Copy8.ipynb
+[I 2021-09-16 11:35:13.400 ServerApp] Copying 1_PPCA-Copy1.ipynb to 
+[I 2021-09-16 11:35:13.412 ServerApp] Saving 1_PPCA-Copy9.ipynb
+[I 2021-09-16 11:35:22.967 ServerApp] Kernel started: c5a3641e-2aad-4833-af6b-fd02847e28af
+[W 2021-09-16 11:35:32.422 ServerApp] 409 PATCH /api/contents/1_PPCA-Copy1.ipynb?1631784932407 (127.0.0.1): File already exists: 1_PPCA.ipynb
+[W 2021-09-16 11:35:32.423 ServerApp] File already exists: 1_PPCA.ipynb
+[W 2021-09-16 11:35:32.423 ServerApp] 409 PATCH /api/contents/1_PPCA-Copy1.ipynb?1631784932407 (127.0.0.1) 13.78ms referer=http://localhost:8889/lab/tree/1_PPCA-Copy1.ipynb
+[I 2021-09-16 11:38:56.399 ServerApp] Kernel shutdown: 3ee0e7d4-73d0-4628-a506-71b235304567
+[W 2021-09-16 11:38:56.519 ServerApp] delete /1_PPCA.ipynb
+[W 2021-09-16 11:38:56.520 ServerApp] Skipping trash for /media/alpha/Projects/pdm_tutorial/jupyter_book/notebooks/1_PPCA.ipynb, on different device to home directory
+[I 2021-09-16 11:39:12.485 ServerApp] Copying 2_LDDMM.ipynb to 
+[I 2021-09-16 11:39:12.498 ServerApp] Saving 2_LDDMM-Copy1.ipynb
+[I 2021-09-16 11:41:22.895 ServerApp] Saving file at /2_LDDMM.ipynb
+[I 2021-09-16 11:41:22.896 ServerApp] Saving 2_LDDMM.ipynb
+[I 2021-09-16 11:41:25.584 ServerApp] Kernel started: c0753044-596b-4aa8-bcef-b0a39e2f6af8
+[I 2021-09-16 11:41:41.959 ServerApp] Kernel started: b22efb28-f4e2-440d-b660-5bb17979ef03
+[I 2021-09-16 11:42:16.925 ServerApp] Kernel started: 3f03e20a-fb8d-4a22-8a94-11c6615e3d84
+[I 2021-09-16 11:42:30.735 ServerApp] Kernel started: 452c327b-a443-47f6-9359-c4fb2225eb19
+[I 2021-09-16 11:42:41.517 ServerApp] Kernel started: 944b39f8-51b5-4d8f-9aad-b081b1b7869e
+[I 2021-09-16 11:42:52.621 ServerApp] Kernel started: e238e89c-cc57-48d0-af21-39448882eed3
+[I 2021-09-16 11:43:18.946 ServerApp] Kernel started: 6abb0817-16e3-4f16-8b65-391195d4de0c
+[I 2021-09-16 11:43:23.497 ServerApp] Kernel started: aad070ec-0f51-4fa5-a0f8-d87555b32541
+[I 2021-09-16 11:43:25.533 ServerApp] Saving file at /3_UMAP.ipynb
+[I 2021-09-16 11:43:25.534 ServerApp] Saving 3_UMAP.ipynb
+[I 2021-09-16 11:43:40.713 ServerApp] Kernel started: f710a507-c96e-4f06-a2c5-21d8ec78fdee
+[I 2021-09-16 11:43:41.908 ServerApp] Saving file at /4_AE.ipynb
+[I 2021-09-16 11:43:41.909 ServerApp] Saving 4_AE.ipynb
+[W 2021-09-16 11:43:57.233 ServerApp] 404 GET /static/jupyter_server_mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Script-Regular.otf (127.0.0.1) 13.10ms referer=http://localhost:8889/lab/tree/1_PPCA.ipynb
+[I 2021-09-16 11:44:16.859 ServerApp] Saving file at /5_EBM.ipynb
+[I 2021-09-16 11:44:16.860 ServerApp] Saving 5_EBM.ipynb
+[I 2021-09-16 11:44:30.684 ServerApp] Saving file at /6_VAE.ipynb
+[I 2021-09-16 11:44:30.684 ServerApp] Saving 6_VAE.ipynb
+[I 2021-09-16 11:44:41.467 ServerApp] Saving file at /7_NAF.ipynb
+[I 2021-09-16 11:44:41.468 ServerApp] Saving 7_NAF.ipynb
+[I 2021-09-16 11:44:52.551 ServerApp] Saving file at /8_SNF.ipynb
+[I 2021-09-16 11:44:52.552 ServerApp] Saving 8_SNF.ipynb
+[I 2021-09-16 11:45:23.420 ServerApp] Saving file at /9_VAEF.ipynb
+[I 2021-09-16 11:45:23.421 ServerApp] Saving 9_VAEF.ipynb
+[I 2021-09-16 11:45:40.663 ServerApp] Saving file at /X_MFLOW.ipynb
+[I 2021-09-16 11:45:40.664 ServerApp] Saving X_MFLOW.ipynb
