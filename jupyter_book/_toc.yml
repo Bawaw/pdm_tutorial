@@ -3,14 +3,35 @@
 
 format: jb-book
 root: intro
-chapters:
-- file: notebooks/1_PPCA.ipynb
-- file: notebooks/2_LDDMM.ipynb
-- file: notebooks/3_UMAP.ipynb
-- file: notebooks/4_AE.ipynb
-- file: notebooks/5_EBM.ipynb
-- file: notebooks/6_VAE.ipynb
-- file: notebooks/7_NAF.ipynb
-- file: notebooks/8_SNF.ipynb
-- file: notebooks/9_VAEF.ipynb
-- file: notebooks/X_MFLOW.ipynb
+
+options:
+  numbered: True
+
+parts:
+  - caption: Introduction
+    chapters:
+    - file: notebooks/1_intro/1_introduction.ipynb
+    - file: notebooks/1_intro/2_setup_guide.ipynb
+    - file: notebooks/1_intro/datasets/0_datasets.ipynb
+      sections:
+       - file: notebooks/1_intro/datasets/1_swiss_roll.ipynb
+       - file: notebooks/1_intro/datasets/2_skull.ipynb
+
+  - caption: Methodology & Experiments
+    chapters:
+    - file: notebooks/2_methodology_and_experiments/1_PPCA.ipynb
+    - file: notebooks/2_methodology_and_experiments/2_LDDMM.ipynb
+    - file: notebooks/2_methodology_and_experiments/3_UMAP.ipynb
+    - file: notebooks/2_methodology_and_experiments/4_AE.ipynb
+    - file: notebooks/2_methodology_and_experiments/5_EBM.ipynb
+    - file: notebooks/2_methodology_and_experiments/6_VAE.ipynb
+    - file: notebooks/2_methodology_and_experiments/7_NAF.ipynb
+    - file: notebooks/2_methodology_and_experiments/8_SNF.ipynb
+    - file: notebooks/2_methodology_and_experiments/9_VAEF.ipynb
+    - file: notebooks/2_methodology_and_experiments/X_MFLOW.ipynb
+    
+  - caption: Conclusion
+    chapters:
+    - file: notebooks/3_conclusion/1_swiss_roll_experiment.ipynb
+    - file: notebooks/3_conclusion/2_skull_experiment.ipynb
+
