@@ -11,6 +11,7 @@ import torch.nn.functional as F
 import torch.distributions as tdist
 import torchdyn.nn.node_layers as tdnl
 
+from enum import Enum
 from joblib import dump, load
 from sklearn.decomposition import PCA
 from pdmtut.core import GenerativeModel
@@ -26,6 +27,13 @@ store_results = True
 load_models = True
 
 class FlowVAE(NormalisingFlow, pl.LightningModule, GenerativeModel):
+    class State(Enum):
+        """State that the model is in."""
+
+        MANIFOLD_LEARNING = 1
+        DENSITY_LEARNING = 2
+        INFERENCE = 3
+
     class Encoder(nn.Module):
         """Encoder q(z|x)"""
 
@@ -139,8 +147,10 @@ class FlowVAE(NormalisingFlow, pl.LightningModule, GenerativeModel):
         self.aug1 = tdnl.Augmenter(augment_dims=3)
         self.af1 = ContinuousAmbientFlow(
             dynamics=RegularisedDynamics(fdyn=FlowVAE.FunctionDynamics()),
-            sensitivity='adjoint', default_n_steps=2
+            sensitivity='autograd', default_n_steps=5
         )
+
+        self.state = FlowVAE.State.INFERENCE
 
 
     # Region NormalisingFlow
@@ -199,8 +209,14 @@ class FlowVAE(NormalisingFlow, pl.LightningModule, GenerativeModel):
         if path is None:
             tb_logger = False
             checkpoint_callback=False
-        else:
-            tb_logger = pl_loggers.TensorBoardLogger(path, version=0)
+
+        #MANIFOLD PHASE
+        self.state = FlowVAE.State.MANIFOLD_LEARNING
+        self.vae1.freeze(False); self.af1.freeze(True)
+
+        if path is not None:
+            tb_logger = pl_loggers.TensorBoardLogger(
+                os.path.join(path, 'mp'), version=0)
             checkpoint_callback=True
 
         trainer = pl.Trainer(
@@ -209,50 +225,89 @@ class FlowVAE(NormalisingFlow, pl.LightningModule, GenerativeModel):
         )
         trainer.fit(
             self, train_dataloaders=X, val_dataloaders=X_val)
-        elapsed_time = time.time() - start_time
 
+        # DENSITY PHASE
+        self.state = FlowVAE.State.DENSITY_LEARNING
+        self.vae1.freeze(True); self.af1.freeze(False)
+
+        if path is not None:
+            tb_logger = pl_loggers.TensorBoardLogger(
+                os.path.join(path, 'dp/'), version=0)
+            checkpoint_callback=True
+
+        trainer = pl.Trainer(
+            max_epochs=8000, gpus=1, logger=tb_logger,
+            checkpoint_callback=checkpoint_callback
+        )
+        trainer.fit(
+            self, train_dataloaders=X, val_dataloaders=X_val)
+
+        # INFERENCE PHASE
+        self.state = FlowVAE.State.INFERENCE
+
+        elapsed_time = time.time() - start_time
         if path is not None:
             with open(os.path.join(path, 'training_time.txt'), 'w') as f:
                 f.write(str(elapsed_time))
 
-    def training_step(self, batch, batch_idx):
-        x = batch[0]
+    def train_step_g(self, x):
+        ds = x.clone() if isinstance(
+            x, DynamicalState) else DynamicalState(state=x)
+
+        ds = self.vae1.inverse(ds, sample=True)
+        ds = super().inverse(ds)
+
+        loss = -ds.log_prob.sum() / (x.shape[0]*x.shape[1])
+
+        return loss
+
+    def train_step_h(self, x):
         lambda_e, lambda_n = 0.01, 0.01
 
-        # logp(z_t1) = logp(z_t0) - \int_0^1 - Tr ∂f/∂z(t)
-        ds_z = self.inverse(x, af_estimate=False, vae_sample=True)
+        ds_z = self.inverse(x, af_estimate=True, vae_sample=False)
 
         # minimise negative log likelihood and energy
         loss = (-ds_z.log_prob + lambda_e * ds_z.e[:, 0] + lambda_n * ds_z.n[:, 0]
-        ).sum() / (x.shape[0]*x.shape[1])
+                ).sum() / (x.shape[0]*x.shape[1])
+
+        return loss
+
+    def training_step(self, batch, batch_idx):
+        x = batch[0]
+
+        if self.state is FlowVAE.State.MANIFOLD_LEARNING:
+            loss = self.train_step_g(x)
+        if self.state is FlowVAE.State.DENSITY_LEARNING:
+            loss = self.train_step_h(x)
 
         self.log('train_loss', loss)
         return {'loss': loss}
 
     def validation_step(self, batch, batch_idx):
         x = batch[0]
-        lambda_e, lambda_n = 0.01, 0.01
 
-        # logp(z_t1) = logp(z_t0) - \int_0^1 - Tr ∂f/∂z(t)
-        ds_z = self.inverse(x, af_estimate=True, vae_sample=True)
-
-        # minimise negative log likelihood and energy
-        loss = (-ds_z.log_prob + lambda_e * ds_z.e[:, 0] + lambda_n * ds_z.n[:, 0]
-        ).sum() / (x.shape[0]*x.shape[1])
+        if self.state is FlowVAE.State.MANIFOLD_LEARNING:
+            loss = self.train_step_g(x)
+        if self.state is FlowVAE.State.DENSITY_LEARNING:
+            loss = self.train_step_h(x)
 
         self.log('validation_loss', loss)
         return {'val_loss': loss}
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
-        return {
-            'optimizer': optimizer,
-            'lr_scheduler':
-            torch.optim.lr_scheduler.ReduceLROnPlateau(
-                optimizer, min_lr=1e-8, factor=0.5, verbose=True,
-                patience=500
-            ), 'monitor': 'train_loss'
-        }
+        if self.state is FlowVAE.State.MANIFOLD_LEARNING:
+            optimizer = torch.optim.Adam(self.parameters(), lr=1e-2)
+            return {
+                'optimizer': optimizer,
+                'lr_scheduler':
+                torch.optim.lr_scheduler.ReduceLROnPlateau(
+                    optimizer, min_lr=1e-8, factor=0.5, verbose=True,
+                    patience=500
+                ), 'monitor': 'train_loss'
+            }
+
+        if self.state is FlowVAE.State.DENSITY_LEARNING:
+            return torch.optim.Adam(self.parameters(), lr=9e-5)
 
     def __str__(self):
         return 'fvae'
@@ -279,7 +334,7 @@ else:
     model = FlowVAE(noise_std=1e-2)
     model.fit_model(
         X=dataset.train_loader(batch_size=512),
-        #X_val=dataset.validation_loader(batch_size=512),
+        X_val=dataset.validation_loader(batch_size=512),
         path=result_save_path)
 
     if store_results:
@@ -288,3 +343,4 @@ else:
         model.save(model_save_path)
 
 model = model.eval()
+

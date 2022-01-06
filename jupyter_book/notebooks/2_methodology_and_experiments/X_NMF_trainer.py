@@ -28,7 +28,7 @@ load_models = True
 
 class NormalisingManifoldFlow(NormalisingFlow, pl.LightningModule, GenerativeModel):
     class State(Enum):
-        """State that the manifold is in."""
+        """State that the model is in."""
 
         MANIFOLD_LEARNING = 1
         DENSITY_LEARNING = 2
@@ -195,12 +195,12 @@ class NormalisingManifoldFlow(NormalisingFlow, pl.LightningModule, GenerativeMod
                 os.path.join(path, 'mp/'), version=0)
             checkpoint_callback=True
 
-        # trainer = pl.Trainer(
-        #     max_epochs=25000, gpus=1, logger=tb_logger,
-        #     checkpoint_callback=checkpoint_callback
-        # )
+        trainer = pl.Trainer(
+            max_epochs=25000, gpus=1, logger=tb_logger,
+            checkpoint_callback=checkpoint_callback
+        )
 
-        # trainer.fit(self, train_dataloaders=X, val_dataloaders=X_val)
+        trainer.fit(self, train_dataloaders=X, val_dataloaders=X_val)
 
         # DENSITY PHASE
         self.state = NormalisingManifoldFlow.State.DENSITY_LEARNING
@@ -212,7 +212,7 @@ class NormalisingManifoldFlow(NormalisingFlow, pl.LightningModule, GenerativeMod
             checkpoint_callback=True
 
         trainer = pl.Trainer(
-            max_epochs=2000, gpus=1, logger=tb_logger,
+            max_epochs=3000, gpus=1, logger=tb_logger,
             checkpoint_callback=checkpoint_callback
         )
 
@@ -277,6 +277,8 @@ class NormalisingManifoldFlow(NormalisingFlow, pl.LightningModule, GenerativeMod
 
     def validation_step(self, batch, batch_idx):
         x = batch[0]
+
+        x = x + 1. # add +1 for numerical stability x ∈ [0, 2]
 
         if self.state is NormalisingManifoldFlow.State.MANIFOLD_LEARNING:
             loss = self.train_step_g(x)
