@@ -148,11 +148,11 @@ class SwissRoll():
     def unnormalise_scale(self, x):
         return (x/self.std) + self.mean
 
-    def X_loader(self, batch_size=10, num_workers=8):
+    def X_loader(self, batch_size=10, num_workers=8, shuffle=True):
         X_dataset = tdata.TensorDataset(self._X)
 
         return tdata.DataLoader(
-            X_dataset, batch_size=batch_size, shuffle=True,
+            X_dataset, batch_size=batch_size, shuffle=shuffle,
             num_workers=num_workers)
 
     def train_loader(self, batch_size=10, num_workers=8):
