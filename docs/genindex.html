@@ -23,7 +23,7 @@
 
     
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -42,6 +42,8 @@
     <script src="_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -71,7 +73,7 @@
 </div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
     <div class="bd-toc-item active">
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
@@ -108,7 +110,7 @@
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="notebooks/1_intro/datasets/1_swiss_roll.html">
-     Pinched Torus Experiment
+     Swiss Roll Dataset
     </a>
    </li>
    <li class="toctree-l2">
@@ -132,12 +134,17 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/2_methodology_and_experiments/2_LDDMM.html">
-   Large Deformation Diffeomorphic Metric Mapping and Principal Geodesic Analysis
+   Large Deformation Diffeomorphic Metric Mapping and PCA
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/2_methodology_and_experiments/3_UMAP.html">
-   Uniform Manifold Approximation
+   Uniform Manifold Approximation and US
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks/2_methodology_and_experiments/4_AE.html">
+   Autoencoder and PCA
   </a>
  </li>
  <li class="toctree-l1">
@@ -152,22 +159,22 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/2_methodology_and_experiments/7_NAF.html">
-   Normalising Ambient Flow
+   Normalising Ambient Flows
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/2_methodology_and_experiments/8_SNF.html">
-   Soft Normalising Flows
+   Normalising Soft Ambient Flows
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="notebooks/2_methodology_and_experiments/9_VAEF.html">
-   VAE-Flows
+  <a class="reference internal" href="notebooks/2_methodology_and_experiments/9_FVAE.html">
+   Flow-based Variational Autoencoders
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="notebooks/2_methodology_and_experiments/X_MFLOW.html">
-   𝓜anifold-Flows
+  <a class="reference internal" href="notebooks/2_methodology_and_experiments/X_NMF.html">
+   Normalising Manifold Flows
   </a>
  </li>
 </ul>
@@ -180,11 +187,6 @@
  <li class="toctree-l1">
   <a class="reference internal" href="notebooks/3_conclusion/1_swiss_roll_experiment.html">
    Swiss Roll Experiment
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="notebooks/3_conclusion/2_skull_experiment.html">
-   Skull Experiment
   </a>
  </li>
 </ul>
@@ -271,14 +273,10 @@
               </div>
               
         
+        <div class='prev-next-bottom'>
             
 
-
-
-<div class='prev-next-bottom'>
-    
-
-</div>
+        </div>
         
         </div>
     </div>

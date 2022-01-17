@@ -251,6 +251,7 @@ class FlowVAE(NormalisingFlow, pl.LightningModule, GenerativeModel):
                 f.write(str(elapsed_time))
 
     def train_step_g(self, x):
+        # ML
         ds = x.clone() if isinstance(
             x, DynamicalState) else DynamicalState(state=x)
 
@@ -262,6 +263,7 @@ class FlowVAE(NormalisingFlow, pl.LightningModule, GenerativeModel):
         return loss
 
     def train_step_h(self, x):
+        # DE
         lambda_e, lambda_n = 0.01, 0.01
 
         ds_z = self.inverse(x, af_estimate=True, vae_sample=False)
@@ -338,8 +340,6 @@ else:
         path=result_save_path)
 
     if store_results:
-        # see bug: https://github.com/DiffEqML/torchdyn/issues/122
-        model.af1.nde.autograd_function=None
         model.save(model_save_path)
 
 model = model.eval()

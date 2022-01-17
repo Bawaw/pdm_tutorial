@@ -111,7 +111,7 @@ class NormalisingManifoldFlow(NormalisingFlow, pl.LightningModule, GenerativeMod
             dynamics=RegularisedDynamics(
                 fdyn=NormalisingManifoldFlow.FunctionDynamicsH()
             ),
-            sensitivity='autograd', default_n_steps=2
+            sensitivity='autograd', default_n_steps=5
         )
         self.mf1 = ContinuousManifoldFlow(
             chart=chart, dynamics=StateDynamics(
@@ -170,7 +170,7 @@ class NormalisingManifoldFlow(NormalisingFlow, pl.LightningModule, GenerativeMod
         return (
             os.path.isfile(os.path.join(path, 'model.pt')))
 
-    def log_likelihood(self, x):
+    def log_likelihood(self, ds_x):
         ds_z = self.inverse(ds_x, af_estimate=False, mf_skip=False)
         return ds_z.log_prob.cpu().detach()
 
@@ -294,7 +294,7 @@ class NormalisingManifoldFlow(NormalisingFlow, pl.LightningModule, GenerativeMod
         return optimizer
 
     def __str__(self):
-        return 'nflows'
+        return 'nmf'
 
 import pyvista as pv
 from pdmtut.datasets import SwissRoll

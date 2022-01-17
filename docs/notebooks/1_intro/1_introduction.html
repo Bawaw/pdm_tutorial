@@ -23,7 +23,7 @@
 
     
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -42,6 +42,8 @@
     <script src="../../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -80,7 +82,7 @@
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
     <div class="bd-toc-item active">
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
@@ -117,7 +119,7 @@
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="datasets/1_swiss_roll.html">
-     Pinched Torus Experiment
+     Swiss Roll Dataset
     </a>
    </li>
    <li class="toctree-l2">
@@ -141,17 +143,17 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../2_methodology_and_experiments/2_LDDMM.html">
-   Large Deformation Diffeomorphic Metric Mapping and Principal Geodesic Analysis
+   Large Deformation Diffeomorphic Metric Mapping and PCA
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../2_methodology_and_experiments/3_UMAP.html">
-   Uniform Manifold Approximation
+   Uniform Manifold Approximation and US
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../2_methodology_and_experiments/4_AE.html">
-   Autoencoder
+   Autoencoder and PCA
   </a>
  </li>
  <li class="toctree-l1">
@@ -166,22 +168,22 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../2_methodology_and_experiments/7_NAF.html">
-   Normalising Ambient Flow
+   Normalising Ambient Flows
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../2_methodology_and_experiments/8_SNF.html">
-   Soft Normalising Flows
+   Normalising Soft Ambient Flows
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../2_methodology_and_experiments/9_VAEF.html">
-   VAE-Flows
+  <a class="reference internal" href="../2_methodology_and_experiments/9_FVAE.html">
+   Flow-based Variational Autoencoders
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../2_methodology_and_experiments/X_MFLOW.html">
-   𝓜anifold-Flows
+  <a class="reference internal" href="../2_methodology_and_experiments/X_NMF.html">
+   Normalising Manifold Flows
   </a>
  </li>
 </ul>
@@ -194,11 +196,6 @@
  <li class="toctree-l1">
   <a class="reference internal" href="../3_conclusion/1_swiss_roll_experiment.html">
    Swiss Roll Experiment
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../3_conclusion/2_skull_experiment.html">
-   Skull Experiment
   </a>
  </li>
 </ul>
@@ -300,6 +297,34 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#change-in-density">
+   Change in Density
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#uniform-distribution">
+   uniform distribution
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#elu-transform">
+   Elu transform
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stereographic-projection">
+   Stereographic projection
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -310,6 +335,229 @@
                 
   <div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="change-in-density">
+<h2>Change in Density<a class="headerlink" href="#change-in-density" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">reload_ext</span> tensorboard
+<span class="o">%</span><span class="k">reload_ext</span> autoreload
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">pyvista</span> <span class="k">as</span> <span class="nn">pv</span>
+<span class="kn">import</span> <span class="nn">torch.distributions</span> <span class="k">as</span> <span class="nn">tdist</span>
+<span class="kn">from</span> <span class="nn">regilib.core.invertible_modules.bijective.deterministic</span> <span class="kn">import</span> <span class="n">AffineTransform</span>
+<span class="kn">from</span> <span class="nn">regilib.core.dynamics.dynamical_state</span> <span class="kn">import</span> <span class="n">DynamicalState</span>
+<span class="kn">from</span> <span class="nn">regilib.core.numerics.derivatives</span> <span class="kn">import</span> <span class="n">batch_jacobian</span>
+<span class="kn">from</span> <span class="nn">regilib.core.invertible_modules.invertible_module</span> <span class="kn">import</span> <span class="n">InvertibleModule</span>
+<span class="kn">from</span> <span class="nn">regilib.core.invertible_modules.charts</span> <span class="kn">import</span> <span class="n">SphericalCoordProj</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="o">=</span><span class="s1">&#39;../results/introduction/&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cat_zeros</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)],</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="uniform-distribution">
+<h2>uniform distribution<a class="headerlink" href="#uniform-distribution" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">base_dist</span> <span class="o">=</span> <span class="n">tdist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+
+<span class="n">_uniform_grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">base_grid</span> <span class="o">=</span> <span class="n">DynamicalState</span><span class="p">(</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">_uniform_grid</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> 
+    <span class="n">log_prob</span> <span class="o">=</span> <span class="n">base_dist</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">_uniform_grid</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+    
+<span class="n">base_samples</span> <span class="o">=</span> <span class="n">DynamicalState</span><span class="p">(</span>
+    <span class="n">state</span> <span class="o">:=</span> <span class="n">base_dist</span><span class="o">.</span><span class="n">sample</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">log_prob</span> <span class="o">=</span> <span class="n">base_dist</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/bawaw/.conda/envs/pdm_tutorial/lib/python3.8/site-packages/torch/functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  /opt/conda/conda-bld/pytorch_1639180588308/work/aten/src/ATen/native/TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pv</span><span class="o">.</span><span class="n">set_plot_theme</span><span class="p">(</span><span class="s2">&quot;document&quot;</span><span class="p">)</span>
+
+<span class="n">pv</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+    <span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="p">(</span><span class="n">cat_zeros</span><span class="p">(</span><span class="n">base_grid</span><span class="o">.</span><span class="n">state</span><span class="p">))</span><span class="o">.</span><span class="n">delaunay_2d</span><span class="p">(),</span>
+    <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">render_points_as_spheres</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scalars</span> <span class="o">=</span> <span class="n">base_grid</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">detach</span><span class="p">(),</span>
+    <span class="n">scalar_bar_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;log prob&#39;</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># plotter.add_mesh(</span>
+<span class="c1">#     pv.PolyData(cat_zeros(base_samples.state)),</span>
+<span class="c1">#     render_points_as_spheres=True, point_size=8)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">show_bounds</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;plane.png&#39;</span><span class="p">))</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1_introduction_8_0.png" src="../../_images/1_introduction_8_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="elu-transform">
+<h2>Elu transform<a class="headerlink" href="#elu-transform" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">EluTransform</span><span class="p">(</span><span class="n">InvertibleModule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">state_in</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span>
+        <span class="n">state_out</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">elu</span><span class="p">(</span><span class="n">state_in</span><span class="p">)</span>
+        <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_out</span>
+
+        <span class="c1"># p(x) -= |log det Jf(z)|</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="s1">&#39;log_prob&#39;</span><span class="p">):</span>
+            <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;log_prob&#39;</span><span class="p">]</span> <span class="o">-=</span> <span class="n">batch_jacobian</span><span class="p">(</span><span class="n">state_out</span><span class="p">,</span> <span class="n">state_in</span><span class="p">)</span><span class="o">.</span><span class="n">slogdet</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">ds</span>
+    
+<span class="n">t1</span> <span class="o">=</span> <span class="n">EluTransform</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elu_grid</span><span class="p">,</span> <span class="n">elu_samples</span> <span class="o">=</span> <span class="n">t1</span><span class="p">(</span><span class="n">base_grid</span><span class="o">.</span><span class="n">clone</span><span class="p">()),</span> <span class="n">t1</span><span class="p">(</span><span class="n">base_samples</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pv</span><span class="o">.</span><span class="n">set_plot_theme</span><span class="p">(</span><span class="s2">&quot;document&quot;</span><span class="p">)</span>
+
+<span class="n">pv</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+    <span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="p">(</span><span class="n">cat_zeros</span><span class="p">(</span><span class="n">elu_grid</span><span class="o">.</span><span class="n">state</span><span class="p">))</span><span class="o">.</span><span class="n">delaunay_2d</span><span class="p">(),</span>
+    <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">render_points_as_spheres</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scalars</span> <span class="o">=</span> <span class="n">elu_grid</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">detach</span><span class="p">(),</span>
+    <span class="n">scalar_bar_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;log prob&#39;</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+    <span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="p">(</span><span class="n">cat_zeros</span><span class="p">(</span><span class="n">elu_samples</span><span class="o">.</span><span class="n">state</span><span class="p">)),</span>
+    <span class="n">render_points_as_spheres</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">point_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">show_bounds</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;elu.png&#39;</span><span class="p">))</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1_introduction_12_0.png" src="../../_images/1_introduction_12_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="stereographic-projection">
+<h2>Stereographic projection<a class="headerlink" href="#stereographic-projection" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">StereoCoordProj</span><span class="p">(</span><span class="n">InvertibleModule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">state_in</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span>
+        <span class="n">psi</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">state_in</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">psi</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">psi</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">gamma</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="o">*</span><span class="n">gamma</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">psi</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">gamma</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">+</span><span class="n">psi</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">gamma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">psi</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">gamma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">state_out</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># p(x) -= 1/2 log det [J_f^T(u)J_f(u)]</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="s1">&#39;log_prob&#39;</span><span class="p">):</span>
+            <span class="n">Jf</span> <span class="o">=</span> <span class="n">batch_jacobian</span><span class="p">(</span><span class="n">state_out</span><span class="p">,</span> <span class="n">state_in</span><span class="p">)</span>
+            <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;log_prob&#39;</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Jf</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">Jf</span><span class="p">)</span><span class="o">.</span><span class="n">slogdet</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_out</span>
+
+        <span class="k">return</span> <span class="n">ds</span>
+
+<span class="n">t2</span> <span class="o">=</span> <span class="n">StereoCoordProj</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stereo_grid</span><span class="p">,</span> <span class="n">stereo_samples</span> <span class="o">=</span> <span class="n">t2</span><span class="p">(</span><span class="n">base_grid</span><span class="o">.</span><span class="n">clone</span><span class="p">()),</span> <span class="n">t2</span><span class="p">(</span><span class="n">base_samples</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pv</span><span class="o">.</span><span class="n">set_plot_theme</span><span class="p">(</span><span class="s2">&quot;document&quot;</span><span class="p">)</span>
+
+<span class="n">pv</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+    <span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="p">(</span><span class="n">stereo_grid</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span><span class="o">.</span><span class="n">delaunay_2d</span><span class="p">(),</span>
+    <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">render_points_as_spheres</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+    <span class="n">scalars</span> <span class="o">=</span> <span class="n">stereo_grid</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">detach</span><span class="p">(),</span>
+    <span class="n">scalar_bar_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;log prob&#39;</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+    <span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="p">(</span><span class="n">stereo_samples</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span>
+    <span class="n">render_points_as_spheres</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">point_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mf">3.470023427913145</span><span class="p">,</span> <span class="mf">3.470023427913145</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.136828710148291</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.33319471776485443</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show_bounds</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;sphere.png&#39;</span><span class="p">))</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1_introduction_16_0.png" src="../../_images/1_introduction_16_0.png" />
+</div>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -335,32 +583,12 @@
               </div>
               
         
+        <div class='prev-next-bottom'>
             
+    <a class='left-prev' id="prev-link" href="../../intro.html" title="previous page">Welcome to your Jupyter Book</a>
+    <a class='right-next' id="next-link" href="2_setup_guide.html" title="next page">Setup Guide</a>
 
-
-
-<div class='prev-next-bottom'>
-    
-    <div id="prev">
-        <a class="left-prev" href="../../intro.html" title="previous page">
-            <i class="prevnext-label fas fa-angle-left"></i>
-            <div class="prevnext-info">
-                <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">Welcome to your Jupyter Book</p>
-            </div>
-        </a>
-    </div>
-     <div id="next">
-        <a class="right-next" href="2_setup_guide.html" title="next page">
-            <div class="prevnext-info">
-                <p class="prevnext-label">next</p>
-                <p class="prevnext-title">Setup Guide</p>
-            </div>
-            <i class="prevnext-label fas fa-angle-right"></i>
-        </a>
-     </div>
-
-</div>
+        </div>
         
         </div>
     </div>

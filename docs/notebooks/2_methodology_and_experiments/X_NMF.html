@@ -1,0 +1,1099 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Normalising Manifold Flows &#8212; My sample book</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Swiss Roll Experiment" href="../3_conclusion/1_swiss_roll_experiment.html" />
+    <link rel="prev" title="Flow-based Variational Autoencoders" href="9_FVAE.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      <img src="../../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">My sample book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Welcome to your Jupyter Book
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../1_intro/1_introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../1_intro/2_setup_guide.html">
+   Setup Guide
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../1_intro/datasets/0_datasets.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1_intro/datasets/1_swiss_roll.html">
+     Swiss Roll Dataset
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1_intro/datasets/2_skull.html">
+     Skull Dataset Experiment
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Methodology &amp; Experiments
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1_PPCA.html">
+   Probabilistic Principal Component Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2_LDDMM.html">
+   Large Deformation Diffeomorphic Metric Mapping and PCA
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3_UMAP.html">
+   Uniform Manifold Approximation and US
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4_AE.html">
+   Autoencoder and PCA
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5_EBM.html">
+   Energy Based Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6_VAE.html">
+   Variational Autoencoder
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="7_NAF.html">
+   Normalising Ambient Flows
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="8_SNF.html">
+   Normalising Soft Ambient Flows
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9_FVAE.html">
+   Flow-based Variational Autoencoders
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Normalising Manifold Flows
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Conclusion
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../3_conclusion/1_swiss_roll_experiment.html">
+   Swiss Roll Experiment
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/notebooks/2_methodology_and_experiments/X_NMF.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/executablebooks/jupyter-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fnotebooks/2_methodology_and_experiments/X_NMF.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/notebooks/2_methodology_and_experiments/X_NMF.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementation">
+   Implementation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#experiment-1-swiss-roll">
+   Experiment 1: swiss roll
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#input-representation">
+     Input Representation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#input-reconstruction">
+     Input Reconstruction
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#density-estimation">
+     Density Estimation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generate-samples">
+     Generate Samples
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#interpolation">
+     Interpolation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#extra">
+     Extra
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">reload_ext</span> tensorboard
+<span class="o">%</span><span class="k">reload_ext</span> autoreload
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="normalising-manifold-flows">
+<h1>Normalising Manifold Flows<a class="headerlink" href="#normalising-manifold-flows" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">pytorch_lightning</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">torch.distributions</span> <span class="k">as</span> <span class="nn">tdist</span>
+<span class="kn">import</span> <span class="nn">torchdyn.nn.node_layers</span> <span class="k">as</span> <span class="nn">tdnl</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">dump</span><span class="p">,</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">from</span> <span class="nn">pdmtut.core</span> <span class="kn">import</span> <span class="n">GenerativeModel</span>
+<span class="kn">from</span> <span class="nn">pytorch_lightning</span> <span class="kn">import</span> <span class="n">loggers</span> <span class="k">as</span> <span class="n">pl_loggers</span>
+<span class="kn">from</span> <span class="nn">regilib.core.distributions</span> <span class="kn">import</span> <span class="n">MultivariateNormal</span>
+<span class="kn">from</span> <span class="nn">regilib.core.dynamics.dynamics</span> <span class="kn">import</span> <span class="n">RegularisedDynamics</span><span class="p">,</span> <span class="n">StateDynamics</span>
+<span class="kn">from</span> <span class="nn">regilib.core.dynamics.dynamical_state</span> <span class="kn">import</span> <span class="n">DynamicalState</span>
+<span class="kn">from</span> <span class="nn">regilib.core.invertible_modules</span> <span class="kn">import</span> <span class="n">NormalisingFlow</span>
+<span class="kn">from</span> <span class="nn">regilib.core.invertible_modules.charts</span> <span class="kn">import</span> <span class="n">PadProj</span>
+<span class="kn">from</span> <span class="nn">regilib.core.invertible_modules.bijective</span> <span class="kn">import</span> <span class="n">ContinuousAmbientFlow</span><span class="p">,</span> <span class="n">ContinuousManifoldFlow</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">store_results</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">load_models</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 9_FVAE_trainer.py was used for the training of this model</span>
+
+<span class="k">class</span> <span class="nc">NormalisingManifoldFlow</span><span class="p">(</span><span class="n">NormalisingFlow</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">GenerativeModel</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">State</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;State that the model is in.&quot;&quot;&quot;</span>
+
+        <span class="n">MANIFOLD_LEARNING</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">DENSITY_LEARNING</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">INFERENCE</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="k">class</span> <span class="nc">FunctionDynamicsH</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Models the dynamics of the ambient flow on the manifold. &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_in_channels</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_channels</span> <span class="o">=</span> <span class="mi">2</span>
+
+            <span class="c1"># expected format: N x (C * L)</span>
+            <span class="c1"># +1 for time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">in_channels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc5</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_channels</span><span class="p">)</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">in_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_channels</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">out_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_channels</span>
+
+        <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">ds</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">t</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc4</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc5</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">x</span>
+
+    <span class="k">class</span> <span class="nc">FunctionDynamicsF</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Models the dynamics of the injection to the manifold. &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_in_channels</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_channels</span> <span class="o">=</span> <span class="mi">3</span>
+
+            <span class="c1"># expected format: N x (C * L)</span>
+            <span class="c1"># +1 for time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">in_channels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc5</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_channels</span><span class="p">)</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">in_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_channels</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">out_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_channels</span>
+
+        <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">ds</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">t</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc4</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc5</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">x</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chart</span><span class="o">=</span><span class="n">PadProj</span><span class="p">()):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">base_distribution</span><span class="o">=</span><span class="n">MultivariateNormal</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+        <span class="p">)</span>
+
+        <span class="c1"># state=[l, e, n | state]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aug1</span> <span class="o">=</span> <span class="n">tdnl</span><span class="o">.</span><span class="n">Augmenter</span><span class="p">(</span><span class="n">augment_dims</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">af1</span> <span class="o">=</span> <span class="n">ContinuousAmbientFlow</span><span class="p">(</span>
+            <span class="n">dynamics</span><span class="o">=</span><span class="n">RegularisedDynamics</span><span class="p">(</span>
+                <span class="n">fdyn</span><span class="o">=</span><span class="n">NormalisingManifoldFlow</span><span class="o">.</span><span class="n">FunctionDynamicsH</span><span class="p">()</span>
+            <span class="p">),</span>
+            <span class="n">sensitivity</span><span class="o">=</span><span class="s1">&#39;autograd&#39;</span><span class="p">,</span> <span class="n">default_n_steps</span><span class="o">=</span><span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mf1</span> <span class="o">=</span> <span class="n">ContinuousManifoldFlow</span><span class="p">(</span>
+            <span class="n">chart</span><span class="o">=</span><span class="n">chart</span><span class="p">,</span> <span class="n">dynamics</span><span class="o">=</span><span class="n">StateDynamics</span><span class="p">(</span>
+                <span class="n">fdyn</span><span class="o">=</span><span class="n">NormalisingManifoldFlow</span><span class="o">.</span><span class="n">FunctionDynamicsF</span><span class="p">()</span>
+            <span class="p">),</span>
+            <span class="n">sensitivity</span><span class="o">=</span><span class="s1">&#39;autograd&#39;</span><span class="p">,</span> <span class="n">default_n_steps</span><span class="o">=</span><span class="mi">5</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">NormalisingManifoldFlow</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">INFERENCE</span>
+
+    <span class="c1"># Region NormalisingFlow</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">af_estimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mf_skip</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">DynamicalState</span><span class="p">)</span> <span class="k">else</span> <span class="n">DynamicalState</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># p(z)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+
+        <span class="c1"># u=h(z)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">af1</span><span class="o">.</span><span class="n">dynamics</span><span class="o">.</span><span class="n">update_ds</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aug1</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]))</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">af1</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">estimate_trace</span><span class="o">=</span><span class="n">af_estimate</span><span class="p">)</span>
+
+        <span class="c1"># x=g(u)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mf1</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">skip_jacobian_det</span><span class="o">=</span><span class="n">mf_skip</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ds</span>
+
+    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">af_estimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mf_skip</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">DynamicalState</span><span class="p">)</span> <span class="k">else</span> <span class="n">DynamicalState</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># u=g⁻¹(x)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mf1</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">skip_jacobian_det</span><span class="o">=</span><span class="n">mf_skip</span><span class="p">)</span>
+
+        <span class="c1"># z=h⁻¹(u)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">af1</span><span class="o">.</span><span class="n">dynamics</span><span class="o">.</span><span class="n">update_ds</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aug1</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]))</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">af1</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">estimate_trace</span><span class="o">=</span><span class="n">af_estimate</span><span class="p">)</span>
+
+        <span class="c1"># p(z)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ds</span>
+
+    <span class="c1"># Region GenerativeModel</span>
+    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;model.pt&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;model.pt&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">save_exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;model.pt&#39;</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds_x</span><span class="p">):</span>
+        <span class="n">ds_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">ds_x</span><span class="p">,</span> <span class="n">af_estimate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mf_skip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ds_z</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">sample_posterior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">):</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">sample_posterior</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+
+    <span class="c1"># Region training</span>
+    <span class="k">def</span> <span class="nf">fit_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tb_logger</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">checkpoint_callback</span><span class="o">=</span><span class="kc">False</span>
+
+        <span class="c1"># MANIFOLD PHASE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">NormalisingManifoldFlow</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">MANIFOLD_LEARNING</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mf1</span><span class="o">.</span><span class="n">freeze</span><span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="bp">self</span><span class="o">.</span><span class="n">af1</span><span class="o">.</span><span class="n">freeze</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tb_logger</span> <span class="o">=</span> <span class="n">pl_loggers</span><span class="o">.</span><span class="n">TensorBoardLogger</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;mp/&#39;</span><span class="p">),</span> <span class="n">version</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">checkpoint_callback</span><span class="o">=</span><span class="kc">True</span>
+
+        <span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span>
+            <span class="n">max_epochs</span><span class="o">=</span><span class="mi">25000</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">tb_logger</span><span class="p">,</span>
+            <span class="n">checkpoint_callback</span><span class="o">=</span><span class="n">checkpoint_callback</span>
+        <span class="p">)</span>
+
+        <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_dataloaders</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">val_dataloaders</span><span class="o">=</span><span class="n">X_val</span><span class="p">)</span>
+
+        <span class="c1"># DENSITY PHASE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">NormalisingManifoldFlow</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">DENSITY_LEARNING</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mf1</span><span class="o">.</span><span class="n">freeze</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span> <span class="bp">self</span><span class="o">.</span><span class="n">af1</span><span class="o">.</span><span class="n">freeze</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tb_logger</span> <span class="o">=</span> <span class="n">pl_loggers</span><span class="o">.</span><span class="n">TensorBoardLogger</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;dp/&#39;</span><span class="p">),</span> <span class="n">version</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">checkpoint_callback</span><span class="o">=</span><span class="kc">True</span>
+
+        <span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span>
+            <span class="n">max_epochs</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">tb_logger</span><span class="p">,</span>
+            <span class="n">checkpoint_callback</span><span class="o">=</span><span class="n">checkpoint_callback</span>
+        <span class="p">)</span>
+
+        <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_dataloaders</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">val_dataloaders</span><span class="o">=</span><span class="n">X_val</span><span class="p">)</span>
+
+        <span class="c1"># INFERENCE PHASE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">NormalisingManifoldFlow</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">INFERENCE</span>
+
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;training_time.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">))</span>
+
+    <span class="c1"># region training</span>
+    <span class="k">def</span> <span class="nf">noise_enhance_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="n">nu</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">nu</span>
+
+    <span class="k">def</span> <span class="nf">train_step_g</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># add noise to data</span>
+        <span class="n">x_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">noise_enhance_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">DynamicalState</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">x_prime</span><span class="p">)</span>
+
+        <span class="c1"># project point to manifold</span>
+        <span class="n">ds_u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mf1</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">skip_jacobian_det</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># reconstruct point</span>
+        <span class="n">ds_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mf1</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">ds_u</span><span class="p">,</span> <span class="n">skip_jacobian_det</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">mse</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">ds_x</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># energy</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">mse</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="k">def</span> <span class="nf">train_step_h</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">lambda_e</span><span class="p">,</span> <span class="n">lambda_n</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span>
+
+        <span class="c1"># logp(z_t1) = logp(z_t0) - \int_0^1 - Tr ∂f/∂z(t)</span>
+        <span class="n">ds_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">af_estimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mf_skip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># negative log likelihood</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="n">ds_z</span><span class="o">.</span><span class="n">log_prob</span> <span class="o">+</span> <span class="n">lambda_e</span> <span class="o">*</span> <span class="n">ds_z</span><span class="o">.</span><span class="n">e</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">lambda_n</span> <span class="o">*</span> <span class="n">ds_z</span><span class="o">.</span><span class="n">n</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mf">1.</span> <span class="c1"># add +1 for numerical stability x ∈ [0, 2]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="n">NormalisingManifoldFlow</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">MANIFOLD_LEARNING</span><span class="p">:</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_step_g</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="n">NormalisingManifoldFlow</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">DENSITY_LEARNING</span><span class="p">:</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_step_h</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;train_loss&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mf">1.</span> <span class="c1"># add +1 for numerical stability x ∈ [0, 2]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="n">NormalisingManifoldFlow</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">MANIFOLD_LEARNING</span><span class="p">:</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_step_g</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="n">NormalisingManifoldFlow</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">DENSITY_LEARNING</span><span class="p">:</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_step_h</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;validation_loss&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">9e-5</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">optimizer</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;nmf&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="experiment-1-swiss-roll">
+<h2>Experiment 1: swiss roll<a class="headerlink" href="#experiment-1-swiss-roll" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyvista</span> <span class="k">as</span> <span class="nn">pv</span>
+<span class="kn">from</span> <span class="nn">pdmtut.datasets</span> <span class="kn">import</span> <span class="n">SwissRoll</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pv</span><span class="o">.</span><span class="n">set_plot_theme</span><span class="p">(</span><span class="s2">&quot;document&quot;</span><span class="p">)</span>
+
+<span class="n">model_save_path</span> <span class="o">=</span> <span class="s1">&#39;../results/swiss_roll/nmf&#39;</span>
+
+<span class="k">if</span> <span class="n">store_results</span><span class="p">:</span>
+    <span class="n">result_save_path</span> <span class="o">=</span> <span class="s1">&#39;../results/swiss_roll/nmf&#39;</span>
+    <span class="n">pv</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">pv</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s1">&#39;ipygany&#39;</span><span class="p">)</span>
+    <span class="n">result_save_path</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">SwissRoll</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">load_models</span> <span class="ow">and</span> <span class="n">NormalisingManifoldFlow</span><span class="o">.</span><span class="n">save_exists</span><span class="p">(</span><span class="n">model_save_path</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">NormalisingManifoldFlow</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_save_path</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">NormalisingManifoldFlow</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit_model</span><span class="p">(</span>
+        <span class="n">X</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_loader</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">512</span><span class="p">),</span>
+        <span class="n">X_val</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">validation_loader</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">512</span><span class="p">),</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">store_results</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model_save_path</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">tensorboard</span> --logdir ../results/swiss_roll/nmf
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reusing TensorBoard on port 6006 (pid 16605), started 0:30:08 ago. (Use &#39;!kill 16605&#39; to kill it.)
+</pre></div>
+</div>
+<div class="output text_html">
+<iframe id="tensorboard-frame-f44db3804fef140b" width="100%" height="800" frameborder="0">
+</iframe>
+<script>
+  (function() {
+    const frame = document.getElementById("tensorboard-frame-f44db3804fef140b");
+    const url = new URL("/", window.location);
+    const port = 6006;
+    if (port) {
+      url.port = port;
+    }
+    frame.src = url;
+  })();
+</script>
+</div></div>
+</div>
+<div class="section" id="input-representation">
+<h3>Input Representation<a class="headerlink" href="#input-representation" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_representation</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">z_extremes</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">y_extremes</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">z_extremes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">z_extremes</span><span class="p">,</span> <span class="n">z_extremes</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_representation</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">index_colors</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">index_colors</span><span class="p">,</span> <span class="n">z_extremes</span><span class="o">=</span><span class="n">z_extremes</span><span class="p">,</span> <span class="n">interpolate_background</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/X_NMF_15_0.png" src="../../_images/X_NMF_15_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="input-reconstruction">
+<h3>Input Reconstruction<a class="headerlink" href="#input-reconstruction" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_reconstruction</span>
+<span class="n">pv</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mse</span> <span class="o">=</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="p">)</span> <span class="o">-</span> <span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">result_save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;reconstruction.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">mse</span><span class="o">.</span><span class="n">item</span><span class="p">()))</span>
+        
+<span class="n">mse</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(478.0297)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_reconstruction</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">dataset</span><span class="o">.</span><span class="n">index_colors</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/X_NMF_20_0.png" src="../../_images/X_NMF_20_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="density-estimation">
+<h3>Density Estimation<a class="headerlink" href="#density-estimation" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_density</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">=</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">log_likelihood</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_log_likelihood</span> <span class="o">=</span> <span class="n">log_likelihood</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">result_save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;density.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">data_log_likelihood</span><span class="o">.</span><span class="n">item</span><span class="p">()))</span>
+        
+<span class="n">data_log_likelihood</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(-1.2739)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pv</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
+<span class="n">plot_density</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">log_likelihood</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/X_NMF_25_0.png" src="../../_images/X_NMF_25_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="generate-samples">
+<h3>Generate Samples<a class="headerlink" href="#generate-samples" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_generated_samples</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">generated_samples</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample_posterior</span><span class="p">(</span><span class="mi">100</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">generated_samples_log_likelihood</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">generated_samples</span><span class="p">)</span>
+<span class="c1">#generated_samples_log_likelihood = torch.zeros(100**2)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_generated_samples</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">generated_samples</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">generated_samples_log_likelihood</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/X_NMF_29_0.png" src="../../_images/X_NMF_29_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="interpolation">
+<h3>Interpolation<a class="headerlink" href="#interpolation" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_interpolation</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z_extremes</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">y_extremes</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uniform_state</span><span class="p">,</span> <span class="n">uniform_log_prob</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sample_points_uniformly</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+
+<span class="n">linfit1</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="n">z_extremes</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">linfit2</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="n">z_extremes</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">linfit3</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="n">z_extremes</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">interpolated_points_1</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">linfit1</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">))))</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">interpolated_points_2</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">linfit2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">))))</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">interpolated_points_3</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">linfit3</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">))))</span> <span class="o">-</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/bawaw/.conda/envs/pdm_tutorial/lib/python3.8/site-packages/torch/functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  /opt/conda/conda-bld/pytorch_1639180588308/work/aten/src/ATen/native/TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_interpolation</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">interpolated_points_1</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> 
+    <span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">interpolated_points_2</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> 
+    <span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">interpolated_points_3</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> 
+    <span class="n">uniform_state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+    <span class="n">uniform_log_prob</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/X_NMF_33_0.png" src="../../_images/X_NMF_33_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="extra">
+<h3>Extra<a class="headerlink" href="#extra" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># x = dataset.X + 1</span>
+<span class="c1"># ds = DynamicalState(state=x)</span>
+
+<span class="c1"># # project point to manifold</span>
+<span class="c1"># ds_u = model.mf1.inverse(ds.clone(), skip_jacobian_det=True)</span>
+
+<span class="c1"># # reconstruct point</span>
+<span class="c1"># ds_x = model.mf1.forward(ds_u.clone(), skip_jacobian_det=True, include_trajectory=True, steps=100)</span>
+
+<span class="c1"># mse = (x - ds_x[&#39;state&#39;]).pow(2).sum(-1)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># x = dataset.X + 1</span>
+<span class="c1"># ds = DynamicalState(state=x)</span>
+
+<span class="c1"># # u=g⁻¹(x)</span>
+<span class="c1"># ds = model.mf1.inverse(ds, skip_jacobian_det=True, include_trajectory=True, steps=50)</span>
+<span class="c1"># traj_1=ds.trajectory</span>
+<span class="c1"># ds.remove_key(&#39;trajectory&#39;)</span>
+
+<span class="c1"># # z=h⁻¹(u)</span>
+<span class="c1"># ds = model.af1.dynamics.update_ds(ds, model.aug1(ds[&#39;state&#39;]))</span>
+<span class="c1"># ds = model.af1.inverse(ds, estimate_trace=True, include_trajectory=True, steps=50)</span>
+
+<span class="c1"># # p(z)</span>
+<span class="c1"># ds = super(NormalisingManifoldFlow, model).inverse(ds)</span>
+
+<span class="c1"># traj_2 = torch.cat([ds.trajectory[:,:,-2:-1], torch.zeros(*ds.trajectory.shape[:-1],1), ds.trajectory[:,:,-1:]],-1)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># traj = torch.cat([traj_1, traj_2],0).detach().numpy()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pv.set_jupyter_backend(&#39;ipygany&#39;)</span>
+
+<span class="c1"># plotter = pv.Plotter()</span>
+<span class="c1"># plotter.add_mesh(pv.PolyData(traj[-1]), render_points_as_spheres=True, color=&#39;red&#39;)</span>
+<span class="c1"># plotter.add_mesh(pv.PolyData(dataset.X.numpy() + 1), render_points_as_spheres=True, opacity=0.1, color=&#39;green&#39;)</span>
+<span class="c1"># plotter.camera_position = [(0, 5, 5), (1, 0, 0), (0, 1, 0)]</span>
+
+<span class="c1"># plotter.show_grid()</span>
+<span class="c1"># plotter.show()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pv.set_jupyter_backend(&#39;None&#39;)</span>
+
+<span class="c1"># from regilib.vis.video_plotter import plot_video</span>
+<span class="c1"># import pyvista as pv</span>
+
+<span class="c1"># plot_video(</span>
+<span class="c1">#     traj, &#39;mflow_test.gif&#39;, render_points_as_spheres=True, reverse=True, </span>
+<span class="c1">#     camera_pos = [(0, 6, 6), (1, 1, 1), (0, 1, 0)],    </span>
+<span class="c1"># )</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks/2_methodology_and_experiments"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="9_FVAE.html" title="previous page">Flow-based Variational Autoencoders</a>
+    <a class='right-next' id="next-link" href="../3_conclusion/1_swiss_roll_experiment.html" title="next page">Swiss Roll Experiment</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book Community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

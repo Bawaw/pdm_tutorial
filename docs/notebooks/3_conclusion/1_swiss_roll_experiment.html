@@ -23,7 +23,7 @@
 
     
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -42,6 +42,8 @@
     <script src="../../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -51,8 +53,7 @@
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Skull Experiment" href="2_skull_experiment.html" />
-    <link rel="prev" title="𝓜anifold-Flows" href="../2_methodology_and_experiments/X_MFLOW.html" />
+    <link rel="prev" title="Normalising Manifold Flows" href="../2_methodology_and_experiments/X_NMF.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -80,7 +81,7 @@
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
     <div class="bd-toc-item active">
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
@@ -117,7 +118,7 @@
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="../1_intro/datasets/1_swiss_roll.html">
-     Pinched Torus Experiment
+     Swiss Roll Dataset
     </a>
    </li>
    <li class="toctree-l2">
@@ -141,17 +142,17 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../2_methodology_and_experiments/2_LDDMM.html">
-   Large Deformation Diffeomorphic Metric Mapping and Principal Geodesic Analysis
+   Large Deformation Diffeomorphic Metric Mapping and PCA
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../2_methodology_and_experiments/3_UMAP.html">
-   Uniform Manifold Approximation
+   Uniform Manifold Approximation and US
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../2_methodology_and_experiments/4_AE.html">
-   Autoencoder
+   Autoencoder and PCA
   </a>
  </li>
  <li class="toctree-l1">
@@ -166,22 +167,22 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../2_methodology_and_experiments/7_NAF.html">
-   Normalising Ambient Flow
+   Normalising Ambient Flows
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../2_methodology_and_experiments/8_SNF.html">
-   Soft Normalising Flows
+   Normalising Soft Ambient Flows
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../2_methodology_and_experiments/9_VAEF.html">
-   VAE-Flows
+  <a class="reference internal" href="../2_methodology_and_experiments/9_FVAE.html">
+   Flow-based Variational Autoencoders
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../2_methodology_and_experiments/X_MFLOW.html">
-   𝓜anifold-Flows
+  <a class="reference internal" href="../2_methodology_and_experiments/X_NMF.html">
+   Normalising Manifold Flows
   </a>
  </li>
 </ul>
@@ -194,11 +195,6 @@
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Swiss Roll Experiment
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="2_skull_experiment.html">
-   Skull Experiment
   </a>
  </li>
 </ul>
@@ -303,7 +299,7 @@
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
+            <nav id="bd-toc-nav">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#input-representation">
@@ -330,6 +326,11 @@
    Interpolation
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extra">
+   Extra
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -353,13 +354,14 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-
 <span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">imageio</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pyvista</span> <span class="k">as</span> <span class="nn">pv</span>
+
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">import</span> <span class="nn">imageio</span>
 </pre></div>
 </div>
 </div>
@@ -373,14 +375,23 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_order</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;ppca_2_components&#39;</span><span class="p">,</span> <span class="s1">&#39;lddmm&#39;</span><span class="p">,</span> <span class="s1">&#39;umap&#39;</span><span class="p">,</span> <span class="s1">&#39;ebm&#39;</span><span class="p">,</span> <span class="s1">&#39;ae&#39;</span><span class="p">,</span> <span class="s1">&#39;vae&#39;</span><span class="p">,</span> <span class="s1">&#39;naf&#39;</span><span class="p">,</span> <span class="s1">&#39;snf&#39;</span><span class="p">,</span> <span class="s1">&#39;fvae&#39;</span><span class="p">,</span> <span class="s1">&#39;nmf&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_plot_kwargs</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">file_extension</span><span class="o">=</span><span class="s1">&#39;obj&#39;</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">file_extension</span> <span class="o">==</span> <span class="s1">&#39;obj&#39;</span><span class="p">:</span> <span class="n">f_read</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">file_extension</span> <span class="o">==</span> <span class="s1">&#39;png&#39;</span><span class="p">:</span> <span class="n">f_read</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">imageio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">file_extension</span> <span class="o">==</span> <span class="s1">&#39;txt&#39;</span><span class="p">:</span> <span class="n">f_read</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="p">[</span><span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()]</span>
                                                              
     <span class="n">objs</span> <span class="o">=</span> <span class="p">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]:</span><span class="n">f_read</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;../results/swiss_roll/*/</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">file_name</span><span class="p">,</span> <span class="n">file_extension</span><span class="p">),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
     <span class="n">objs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ppca_3_components&#39;</span><span class="p">)</span>
+    
     <span class="k">return</span> <span class="n">objs</span>
 </pre></div>
 </div>
@@ -390,20 +401,13 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pv</span><span class="o">.</span><span class="n">set_plot_theme</span><span class="p">(</span><span class="s2">&quot;document&quot;</span><span class="p">)</span>
 <span class="n">pv</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
-
-<span class="c1"># if store_results:</span>
-<span class="c1">#     result_save_path = &#39;../experiments/swiss_roll/results/ppca_2_components&#39;</span>
-<span class="c1">#     pv.set_jupyter_backend(&#39;None&#39;)</span>
-<span class="c1"># else:</span>
-<span class="c1">#     pv.set_jupyter_backend(&#39;ipygany&#39;)</span>
-<span class="c1">#     result_save_path = None</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -412,18 +416,24 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plotter_for_each_panel</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">f_plot</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">):</span>
     <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">keys</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">plot_order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="n">n_keys</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> 
+            <span class="n">index</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span><span class="p">)</span> 
+            <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="n">n_keys</span><span class="p">:</span>
+                <span class="k">return</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
             <span class="n">plotter</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
             <span class="n">plotter</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
             <span class="n">f_plot</span><span class="p">(</span><span class="o">**</span><span class="n">plot_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-            
+
 <span class="k">def</span> <span class="nf">image_plotter_for_each_panel</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">):</span>
     <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">imgs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="n">keys</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">plot_order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="n">max_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_index</span><span class="p">):</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> 
         <span class="n">g</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">g</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -451,12 +461,117 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/1_swiss_roll_experiment_10_0.png" src="../../_images/1_swiss_roll_experiment_10_0.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_30792</span><span class="o">/</span><span class="mf">4250972299.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="p">))</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">image_plotter_for_each_panel</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nn">/tmp/ipykernel_30792/18865245.py</span> in <span class="ni">image_plotter_for_each_panel</span><span class="nt">(imgs, plot_shape)</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="k">def</span> <span class="nf">image_plotter_for_each_panel</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span>     <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">imgs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="ne">---&gt; </span><span class="mi">18</span>     <span class="n">keys</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">plot_order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span>     <span class="n">max_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">))</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_index</span><span class="p">):</span>
+
+<span class="nn">/tmp/ipykernel_30792/18865245.py</span> in <span class="ni">&lt;lambda&gt;</span><span class="nt">(e)</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="k">def</span> <span class="nf">image_plotter_for_each_panel</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span>     <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">imgs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="ne">---&gt; </span><span class="mi">18</span>     <span class="n">keys</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">plot_order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span>     <span class="n">max_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">))</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_index</span><span class="p">):</span>
+
+<span class="ne">ValueError</span>: &#39;ae_homeomorphic&#39; is not in list
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1440x4320 with 0 Axes&gt;
+</pre></div>
+</div>
 </div>
 </div>
 </div>
 <div class="section" id="input-reconstruction">
 <h2>Input Reconstruction<a class="headerlink" href="#input-reconstruction" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mse_errors</span> <span class="o">=</span> <span class="n">read_plot_kwargs</span><span class="p">(</span><span class="s1">&#39;reconstruction&#39;</span><span class="p">,</span> <span class="s1">&#39;txt&#39;</span><span class="p">)</span>
+<span class="n">df_reconstruction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">mse_errors</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MSE&#39;</span><span class="p">])</span>
+<span class="n">df_reconstruction</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">plot_order</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MSE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>dataset</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>ppca_2_components</th>
+      <td>10.422249043973492</td>
+    </tr>
+    <tr>
+      <th>lddmm</th>
+      <td>5.1534423828125</td>
+    </tr>
+    <tr>
+      <th>umap</th>
+      <td>1.7059484720230103</td>
+    </tr>
+    <tr>
+      <th>ebm</th>
+      <td>138.17579650878906</td>
+    </tr>
+    <tr>
+      <th>ae</th>
+      <td>0.19316305220127106</td>
+    </tr>
+    <tr>
+      <th>vae</th>
+      <td>0.8526504635810852</td>
+    </tr>
+    <tr>
+      <th>naf</th>
+      <td>8.028450793062802e-08</td>
+    </tr>
+    <tr>
+      <th>snf</th>
+      <td>2.8050467903995013e-07</td>
+    </tr>
+    <tr>
+      <th>fvae</th>
+      <td>0.9597674012184143</td>
+    </tr>
+    <tr>
+      <th>nmf</th>
+      <td>478.0296936035156</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_reconstruction</span>
@@ -468,7 +583,7 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">plot_shape</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">plot_shape</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="p">(</span><span class="mi">500</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">500</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
 <span class="n">plotter_for_each_panel</span><span class="p">(</span><span class="n">plotter</span><span class="p">,</span> <span class="n">plot_reconstruction</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">)</span>
 
@@ -479,12 +594,91 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/1_swiss_roll_experiment_13_0.png" src="../../_images/1_swiss_roll_experiment_13_0.png" />
+<img alt="../../_images/1_swiss_roll_experiment_15_0.png" src="../../_images/1_swiss_roll_experiment_15_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="density-estimation">
 <h2>Density Estimation<a class="headerlink" href="#density-estimation" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_log_likelihood</span> <span class="o">=</span> <span class="n">read_plot_kwargs</span><span class="p">(</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="s1">&#39;txt&#39;</span><span class="p">)</span>
+<span class="n">df_density</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data_log_likelihood</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Log Likelihood&#39;</span><span class="p">])</span>
+<span class="n">df_density</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">plot_order</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Log Likelihood</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>dataset</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>ppca_2_components</th>
+      <td>-0.9320715096384685</td>
+    </tr>
+    <tr>
+      <th>lddmm</th>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>umap</th>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>ebm</th>
+      <td>-0.009618597105145454</td>
+    </tr>
+    <tr>
+      <th>ae</th>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>vae</th>
+      <td>0.7087732553482056</td>
+    </tr>
+    <tr>
+      <th>naf</th>
+      <td>7.878046035766602</td>
+    </tr>
+    <tr>
+      <th>snf</th>
+      <td>3.473109722137451</td>
+    </tr>
+    <tr>
+      <th>fvae</th>
+      <td>0.4282466769218445</td>
+    </tr>
+    <tr>
+      <th>nmf</th>
+      <td>-1.2739371061325073</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_density</span>
@@ -496,7 +690,7 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">plot_shape</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">plot_shape</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="p">(</span><span class="mi">500</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">500</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
 <span class="n">plotter_for_each_panel</span><span class="p">(</span><span class="n">plotter</span><span class="p">,</span> <span class="n">plot_density</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">)</span>
 
@@ -507,7 +701,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/1_swiss_roll_experiment_16_0.png" src="../../_images/1_swiss_roll_experiment_16_0.png" />
+<img alt="../../_images/1_swiss_roll_experiment_19_0.png" src="../../_images/1_swiss_roll_experiment_19_0.png" />
 </div>
 </div>
 </div>
@@ -524,9 +718,9 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">window_size</span><span class="o">=</span><span class="p">(</span><span class="mi">500</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">500</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
-<span class="n">plotter_for_each_panel</span><span class="p">(</span><span class="n">plotter</span><span class="p">,</span> <span class="n">plot_generated_samples</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="p">,</span> <span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">plotter_for_each_panel</span><span class="p">(</span><span class="n">plotter</span><span class="p">,</span> <span class="n">plot_generated_samples</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="p">,</span> <span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">link_views</span><span class="p">()</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="mi">65</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">65</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
@@ -535,7 +729,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/1_swiss_roll_experiment_19_0.png" src="../../_images/1_swiss_roll_experiment_19_0.png" />
+<img alt="../../_images/1_swiss_roll_experiment_22_0.png" src="../../_images/1_swiss_roll_experiment_22_0.png" />
 </div>
 </div>
 </div>
@@ -552,7 +746,7 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">plot_shape</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">plot_shape</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="p">(</span><span class="mi">500</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">500</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
 <span class="n">plotter_for_each_panel</span><span class="p">(</span><span class="n">plotter</span><span class="p">,</span> <span class="n">plot_interpolation</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">)</span>
 
@@ -563,7 +757,39 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/1_swiss_roll_experiment_22_0.png" src="../../_images/1_swiss_roll_experiment_22_0.png" />
+<img alt="../../_images/1_swiss_roll_experiment_25_0.png" src="../../_images/1_swiss_roll_experiment_25_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="extra">
+<h2>Extra<a class="headerlink" href="#extra" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_reconstruction</span><span class="p">,</span> <span class="n">df_density</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">plot_order</span><span class="p">)</span><span class="o">.</span><span class="n">to_latex</span><span class="p">())</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\begin{tabular}{lll}
+\toprule
+{} &amp;                     MSE &amp;         Log Likelihood \\
+\midrule
+dataset           &amp;                     NaN &amp;                    NaN \\
+ppca\_2\_components &amp;      10.422249043973492 &amp;    -0.9320715096384685 \\
+lddmm             &amp;         5.1534423828125 &amp;                    1.0 \\
+umap              &amp;      1.7059484720230103 &amp;                    1.0 \\
+ebm               &amp;      138.17579650878906 &amp;  -0.009618597105145454 \\
+ae                &amp;     0.19316305220127106 &amp;                    1.0 \\
+vae               &amp;      0.8526504635810852 &amp;     0.7087732553482056 \\
+naf               &amp;   8.028450793062802e-08 &amp;      7.878046035766602 \\
+snf               &amp;  2.8050467903995013e-07 &amp;      3.473109722137451 \\
+fvae              &amp;      0.9597674012184143 &amp;     0.4282466769218445 \\
+nmf               &amp;       478.0296936035156 &amp;    -1.2739371061325073 \\
+\bottomrule
+\end{tabular}
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -592,32 +818,11 @@
               </div>
               
         
+        <div class='prev-next-bottom'>
             
+    <a class='left-prev' id="prev-link" href="../2_methodology_and_experiments/X_NMF.html" title="previous page">Normalising Manifold Flows</a>
 
-
-
-<div class='prev-next-bottom'>
-    
-    <div id="prev">
-        <a class="left-prev" href="../2_methodology_and_experiments/X_MFLOW.html" title="previous page">
-            <i class="prevnext-label fas fa-angle-left"></i>
-            <div class="prevnext-info">
-                <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">𝓜anifold-Flows</p>
-            </div>
-        </a>
-    </div>
-     <div id="next">
-        <a class="right-next" href="2_skull_experiment.html" title="next page">
-            <div class="prevnext-info">
-                <p class="prevnext-label">next</p>
-                <p class="prevnext-title">Skull Experiment</p>
-            </div>
-            <i class="prevnext-label fas fa-angle-right"></i>
-        </a>
-     </div>
-
-</div>
+        </div>
         
         </div>
     </div>
