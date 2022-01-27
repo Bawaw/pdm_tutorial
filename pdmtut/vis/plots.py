@@ -40,8 +40,13 @@ def _plot_representation_2d(
     if interpolate_background and index_colors is not None:
         from scipy.interpolate import NearestNDInterpolator
 
-        z_range = (np.floor(z_coordinates.min(0)),
-                   np.ceil(z_coordinates.max(0)))
+        z_min = np.floor(z_coordinates.min(0))
+        z_max = np.ceil(z_coordinates.max(0))
+        if z_extremes is not None:
+            z_min = np.vstack([z_min, np.floor(z_extremes.numpy().min(0))]).min(0)
+            z_max = np.vstack([z_max, np.ceil(z_extremes.numpy().max(0))]).max(0)
+
+        z_range = (z_min, z_max)
 
         X, Y = np.meshgrid( # 2D grid for interpolation
             np.linspace(z_range[0][0], z_range[1][0], 10),
@@ -68,14 +73,14 @@ def _plot_representation_2d(
         sns.scatterplot(
             data=extreme_data, x='$z_1$', y='$z_2$', hue='set', legend=False,
             s=200, linewidth=2, ax=g.ax_joint, zorder=200, edgecolor="#404040",
-            palette=[(1., 0., 1.), (0., 1, 0.)]
+            palette=[(1., 0., 0.), (0., 1, 0.), (0., 0, 1.)]
         )
 
         # plot line between extreme points 1
         sns.lineplot(
             data=extreme_data, x='$z_1$', y='$z_2$', hue='set',
             lw=2, ax=g.ax_joint, zorder=100, legend=False,
-            palette=[(1., 0, 1.), (0., 1, 0.)]
+            palette=[(1., 0, 0.), (0., 1, 0.), (0., 0, 1.)]
         )
 
         if root is not None:
@@ -101,14 +106,14 @@ def _plot_panel(data, extreme_data, k1, k2, index_colors, ax):
         sns.scatterplot(
             data=extreme_data, x=k1, y=k2, hue='set', legend=False,
             s=200, linewidth=2, zorder=200, ax=ax,
-            palette=[(1., 0., 1.), (0., 1, 0.)]
+            palette=[(1., 0., 0.), (0., 1, 0.), (0., 0, 1.)]
         )
 
         # plot line between extreme points 1
         sns.lineplot(
             data=extreme_data, x=k1, y=k2, hue='set',
             lw=2, zorder=100, legend=False, ax=ax,
-            palette=[(1., 0, 1.), (0., 1, 0.)]
+            palette=[(1., 0., 0.), (0., 1, 0.), (0., 0, 1.)]
         )
 
 
@@ -220,8 +225,8 @@ def plot_generated_samples(generated_samples, log_prob, root=None, axis=None):
         }, open(os.path.join(root, 'generated_samples.obj'), 'wb'))
 
 def plot_interpolation(
-        interpolated_points_1, interpolated_points_2, mesh, mesh_log_prob,
-        root=None, axis=None):
+        interpolated_points_1, interpolated_points_2, interpolated_points_3,
+        mesh, mesh_log_prob, root=None, axis=None):
     plotter = pv.Plotter() if axis is None else axis
 
     plotter.add_mesh(
@@ -230,12 +235,12 @@ def plot_interpolation(
         opacity=0.4, scalar_bar_args={'title':'Log probability'}
     )
 
-    plotter.add_mesh(pv.Spline(interpolated_points_1, 100).tube(0.1), color=(1., 0., 1.))
+    plotter.add_mesh(pv.Spline(interpolated_points_1, 100).tube(0.1), color=(1., 0., 0.))
     plotter.add_mesh(
         pv.PolyData(np.stack([interpolated_points_1[0], interpolated_points_1[-1]])),
         render_points_as_spheres=True, point_size=12,
         diffuse=0.99, specular=0.8, ambient=1., smooth_shading=True,
-        style='points', rgb=True, color=(1., 0., 1.)
+        style='points', rgb=True, color=(1., 0., 0.)
     )
 
     plotter.add_mesh(pv.Spline(
@@ -245,6 +250,15 @@ def plot_interpolation(
         render_points_as_spheres=True, point_size=12,
         diffuse=0.99, specular=0.8, ambient=1., smooth_shading=True,
         style='points', rgb=True, color=(0., 1, 0.)
+    )
+
+    plotter.add_mesh(pv.Spline(
+        interpolated_points_3, 100).tube(0.1), color=(0., 0, 1.))
+    plotter.add_mesh(
+        pv.PolyData(np.stack([interpolated_points_3[0], interpolated_points_3[-1]])),
+        render_points_as_spheres=True, point_size=12,
+        diffuse=0.99, specular=0.8, ambient=1., smooth_shading=True,
+        style='points', rgb=True, color=(0., 0, 1.)
     )
 
     plotter.add_light(pv.Light(
@@ -263,6 +277,7 @@ def plot_interpolation(
         pickle.dump({
             'interpolated_points_1': interpolated_points_1,
             'interpolated_points_2': interpolated_points_2,
+            'interpolated_points_3': interpolated_points_3,
             'mesh': mesh,
             'mesh_log_prob': mesh_log_prob
         }, open(os.path.join(root, 'interpolation.obj'), 'wb'))

@@ -13,9 +13,7 @@ parts:
     - file: notebooks/1_intro/1_introduction.ipynb
     - file: notebooks/1_intro/2_setup_guide.ipynb
     - file: notebooks/1_intro/datasets/0_datasets.ipynb
-      sections:
-       - file: notebooks/1_intro/datasets/1_swiss_roll.ipynb
-       - file: notebooks/1_intro/datasets/2_skull.ipynb
+    - file: notebooks/1_intro/datasets/1_swiss_roll.ipynb
 
   - caption: Methodology & Experiments
     chapters:
@@ -27,11 +25,9 @@ parts:
     - file: notebooks/2_methodology_and_experiments/6_VAE.ipynb
     - file: notebooks/2_methodology_and_experiments/7_NAF.ipynb
     - file: notebooks/2_methodology_and_experiments/8_SNF.ipynb
-    - file: notebooks/2_methodology_and_experiments/9_VAEF.ipynb
-    - file: notebooks/2_methodology_and_experiments/X_MFLOW.ipynb
+    - file: notebooks/2_methodology_and_experiments/9_FVAE.ipynb
+    - file: notebooks/2_methodology_and_experiments/X_NMF.ipynb
     
   - caption: Conclusion
     chapters:
     - file: notebooks/3_conclusion/1_swiss_roll_experiment.ipynb
-    - file: notebooks/3_conclusion/2_skull_experiment.ipynb
-
