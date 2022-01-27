@@ -106,27 +106,15 @@
    Setup Guide
   </a>
  </li>
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1">
   <a class="reference internal" href="../1_intro/datasets/0_datasets.html">
    Datasets
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1_intro/datasets/1_swiss_roll.html">
-     Swiss Roll Dataset
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1_intro/datasets/2_skull.html">
-     Skull Dataset Experiment
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../1_intro/datasets/1_swiss_roll.html">
+   Swiss Roll Dataset
+  </a>
  </li>
 </ul>
 <p class="caption">
@@ -142,7 +130,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../2_methodology_and_experiments/2_LDDMM.html">
-   Large Deformation Diffeomorphic Metric Mapping and PCA
+   Large Deformation Diffeomorphic Metric Mapping and US
   </a>
  </li>
  <li class="toctree-l1">
@@ -461,33 +449,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_30792</span><span class="o">/</span><span class="mf">4250972299.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="p">))</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">image_plotter_for_each_panel</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="nn">/tmp/ipykernel_30792/18865245.py</span> in <span class="ni">image_plotter_for_each_panel</span><span class="nt">(imgs, plot_shape)</span>
-<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="k">def</span> <span class="nf">image_plotter_for_each_panel</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span>     <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">imgs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="ne">---&gt; </span><span class="mi">18</span>     <span class="n">keys</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">plot_order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span>     <span class="n">max_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_index</span><span class="p">):</span>
-
-<span class="nn">/tmp/ipykernel_30792/18865245.py</span> in <span class="ni">&lt;lambda&gt;</span><span class="nt">(e)</span>
-<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="k">def</span> <span class="nf">image_plotter_for_each_panel</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">plot_shape</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span>     <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">imgs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="ne">---&gt; </span><span class="mi">18</span>     <span class="n">keys</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">plot_order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span>     <span class="n">max_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">plot_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_index</span><span class="p">):</span>
-
-<span class="ne">ValueError</span>: &#39;ae_homeomorphic&#39; is not in list
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1440x4320 with 0 Axes&gt;
-</pre></div>
-</div>
+<img alt="../../_images/1_swiss_roll_experiment_11_0.png" src="../../_images/1_swiss_roll_experiment_11_0.png" />
 </div>
 </div>
 </div>
@@ -542,7 +504,7 @@
     </tr>
     <tr>
       <th>ebm</th>
-      <td>138.17579650878906</td>
+      <td>135.48646545410156</td>
     </tr>
     <tr>
       <th>ae</th>
@@ -554,7 +516,7 @@
     </tr>
     <tr>
       <th>naf</th>
-      <td>8.028450793062802e-08</td>
+      <td>8.366670272152987e-07</td>
     </tr>
     <tr>
       <th>snf</th>
@@ -566,7 +528,7 @@
     </tr>
     <tr>
       <th>nmf</th>
-      <td>478.0296936035156</td>
+      <td>0.0002189374208683148</td>
     </tr>
   </tbody>
 </table>
@@ -637,7 +599,7 @@
     </tr>
     <tr>
       <th>ppca_2_components</th>
-      <td>-0.9320715096384685</td>
+      <td>-8.538554969111125</td>
     </tr>
     <tr>
       <th>lddmm</th>
@@ -649,31 +611,31 @@
     </tr>
     <tr>
       <th>ebm</th>
-      <td>-0.009618597105145454</td>
+      <td>-7.6159820556640625</td>
     </tr>
     <tr>
       <th>ae</th>
-      <td>1.0</td>
+      <td>-7.60769510269165</td>
     </tr>
     <tr>
       <th>vae</th>
-      <td>0.7087732553482056</td>
+      <td>-7.7125563621521</td>
     </tr>
     <tr>
       <th>naf</th>
-      <td>7.878046035766602</td>
+      <td>0.27156203985214233</td>
     </tr>
     <tr>
       <th>snf</th>
-      <td>3.473109722137451</td>
+      <td>-4.133373737335205</td>
     </tr>
     <tr>
       <th>fvae</th>
-      <td>0.4282466769218445</td>
+      <td>-8.800947189331055</td>
     </tr>
     <tr>
       <th>nmf</th>
-      <td>-1.2739371061325073</td>
+      <td>-8.880420684814453</td>
     </tr>
   </tbody>
 </table>
@@ -766,26 +728,26 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_reconstruction</span><span class="p">,</span> <span class="n">df_density</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">plot_order</span><span class="p">)</span><span class="o">.</span><span class="n">to_latex</span><span class="p">())</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">plot_order</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_latex</span><span class="p">())</span> 
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\begin{tabular}{lll}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\begin{tabular}{lrr}
 \toprule
-{} &amp;                     MSE &amp;         Log Likelihood \\
+{} &amp;     MSE &amp;  Log Likelihood \\
 \midrule
-dataset           &amp;                     NaN &amp;                    NaN \\
-ppca\_2\_components &amp;      10.422249043973492 &amp;    -0.9320715096384685 \\
-lddmm             &amp;         5.1534423828125 &amp;                    1.0 \\
-umap              &amp;      1.7059484720230103 &amp;                    1.0 \\
-ebm               &amp;      138.17579650878906 &amp;  -0.009618597105145454 \\
-ae                &amp;     0.19316305220127106 &amp;                    1.0 \\
-vae               &amp;      0.8526504635810852 &amp;     0.7087732553482056 \\
-naf               &amp;   8.028450793062802e-08 &amp;      7.878046035766602 \\
-snf               &amp;  2.8050467903995013e-07 &amp;      3.473109722137451 \\
-fvae              &amp;      0.9597674012184143 &amp;     0.4282466769218445 \\
-nmf               &amp;       478.0296936035156 &amp;    -1.2739371061325073 \\
+dataset           &amp;     NaN &amp;             NaN \\
+ppca\_2\_components &amp;   10.42 &amp;           -8.54 \\
+lddmm             &amp;    5.15 &amp;            1.00 \\
+umap              &amp;    1.71 &amp;            1.00 \\
+ebm               &amp;  135.49 &amp;           -7.62 \\
+ae                &amp;    0.19 &amp;           -7.61 \\
+vae               &amp;    0.85 &amp;           -7.71 \\
+naf               &amp;    0.00 &amp;            0.27 \\
+snf               &amp;    0.00 &amp;           -4.13 \\
+fvae              &amp;    0.96 &amp;           -8.80 \\
+nmf               &amp;    0.00 &amp;           -8.88 \\
 \bottomrule
 \end{tabular}
 </pre></div>

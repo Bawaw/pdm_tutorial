@@ -107,27 +107,15 @@
    Setup Guide
   </a>
  </li>
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1">
   <a class="reference internal" href="../1_intro/datasets/0_datasets.html">
    Datasets
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1_intro/datasets/1_swiss_roll.html">
-     Swiss Roll Dataset
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1_intro/datasets/2_skull.html">
-     Skull Dataset Experiment
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../1_intro/datasets/1_swiss_roll.html">
+   Swiss Roll Dataset
+  </a>
  </li>
 </ul>
 <p class="caption">
@@ -143,7 +131,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="2_LDDMM.html">
-   Large Deformation Diffeomorphic Metric Mapping and PCA
+   Large Deformation Diffeomorphic Metric Mapping and US
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,8 +338,8 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#input-reconstruction-3d">
-     Input reconstruction (3D)
+    <a class="reference internal nav-link" href="#input-representation-3d">
+     Input Representation (3D)
     </a>
    </li>
   </ul>
@@ -629,17 +617,17 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reusing TensorBoard on port 6010 (pid 26030), started 0:05:36 ago. (Use &#39;!kill 26030&#39; to kill it.)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reusing TensorBoard on port 6007 (pid 101682), started 0:13:01 ago. (Use &#39;!kill 101682&#39; to kill it.)
 </pre></div>
 </div>
 <div class="output text_html">
-<iframe id="tensorboard-frame-d2e995248c0d173f" width="100%" height="800" frameborder="0">
+<iframe id="tensorboard-frame-21390bcef29274fc" width="100%" height="800" frameborder="0">
 </iframe>
 <script>
   (function() {
-    const frame = document.getElementById("tensorboard-frame-d2e995248c0d173f");
+    const frame = document.getElementById("tensorboard-frame-21390bcef29274fc");
     const url = new URL("/", window.location);
-    const port = 6010;
+    const port = 6007;
     if (port) {
       url.port = port;
     }
@@ -728,6 +716,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_density</span>
+<span class="kn">from</span> <span class="nn">regilib.core.invertible_modules.bijective</span> <span class="kn">import</span> <span class="n">AffineTransform</span>
 </pre></div>
 </div>
 </div>
@@ -735,161 +724,17 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">log_likelihood</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_26713</span><span class="o">/</span><span class="mf">2400492464.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">log_likelihood</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
 
-<span class="nn">/tmp/ipykernel_26713/2302598178.py</span> in <span class="ni">log_likelihood</span><span class="nt">(self, x)</span>
-<span class="g g-Whitespace">     </span><span class="mi">81</span> 
-<span class="g g-Whitespace">     </span><span class="mi">82</span>     <span class="k">def</span> <span class="nf">log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">83</span>         <span class="n">ds_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">af_estimate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">84</span>         <span class="k">return</span> <span class="n">ds_z</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">85</span> 
-
-<span class="nn">/tmp/ipykernel_26713/2302598178.py</span> in <span class="ni">inverse</span><span class="nt">(self, x, af_estimate)</span>
-<span class="g g-Whitespace">     </span><span class="mi">57</span> 
-<span class="g g-Whitespace">     </span><span class="mi">58</span>         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">af1</span><span class="o">.</span><span class="n">dynamics</span><span class="o">.</span><span class="n">update_ds</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aug1</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]))</span>
-<span class="ne">---&gt; </span><span class="mi">59</span>         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">af1</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">estimate_trace</span><span class="o">=</span><span class="n">af_estimate</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">60</span>         <span class="n">ds</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">61</span>         <span class="k">return</span> <span class="n">ds</span>
-
-<span class="nn">/media/alpha/Projects/regilib/regilib/core/invertible_modules/bijective/node/continuous_ambient_flow.py</span> in <span class="ni">inverse</span><span class="nt">(self, ds_x, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span> 
-<span class="g g-Whitespace">     </span><span class="mi">25</span>         <span class="c1"># z(t₁) = \int_0^1 f(z(t), t)</span>
-<span class="ne">---&gt; </span><span class="mi">26</span>         <span class="n">ds_z</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">ds_x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">27</span> 
-<span class="g g-Whitespace">     </span><span class="mi">28</span>         <span class="c1"># -log det J_h(z) = - \int_0^1 - Tr(∂f/∂z(t))</span>
-
-<span class="nn">/media/alpha/Projects/regilib/regilib/core/invertible_modules/bijective/node/continuous_flow.py</span> in <span class="ni">inverse</span><span class="nt">(self, ds_x, t0, t1, steps, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">111</span> 
-<span class="g g-Whitespace">    </span><span class="mi">112</span>         <span class="c1"># t: 0 -&gt; 1</span>
-<span class="ne">--&gt; </span><span class="mi">113</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">ds_x</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="o">=</span><span class="n">t1</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="n">steps</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<span class="nn">/media/alpha/Projects/regilib/regilib/core/invertible_modules/bijective/node/continuous_flow.py</span> in <span class="ni">integrate</span><span class="nt">(self, ds, t0, t1, steps, include_trajectory, include_time_steps, estimate_trace, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">89</span>             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;estimate_trace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">estimate_trace</span>
-<span class="g g-Whitespace">     </span><span class="mi">90</span>         <span class="bp">self</span><span class="o">.</span><span class="n">dynamics</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">91</span>         <span class="n">time_steps</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nde</span><span class="p">(</span><span class="n">ds_tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">steps</span><span class="p">),</span> <span class="n">estimate_trace</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">92</span>         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics</span><span class="o">.</span><span class="n">update_ds</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="g g-Whitespace">     </span><span class="mi">93</span> 
-
-<span class="nn">~/.conda/envs/pdm_tutorial/lib/python3.8/site-packages/torch/nn/modules/module.py</span> in <span class="ni">_call_impl</span><span class="nt">(self, *input, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1100</span>         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backward_hooks</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_hooks</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_pre_hooks</span> <span class="ow">or</span> <span class="n">_global_backward_hooks</span>
-<span class="g g-Whitespace">   </span><span class="mi">1101</span>                 <span class="ow">or</span> <span class="n">_global_forward_hooks</span> <span class="ow">or</span> <span class="n">_global_forward_pre_hooks</span><span class="p">):</span>
-<span class="ne">-&gt; </span><span class="mi">1102</span>             <span class="k">return</span> <span class="n">forward_call</span><span class="p">(</span><span class="o">*</span><span class="nb">input</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1103</span>         <span class="c1"># Do not call functions when jit is used</span>
-<span class="g g-Whitespace">   </span><span class="mi">1104</span>         <span class="n">full_backward_hooks</span><span class="p">,</span> <span class="n">non_full_backward_hooks</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-
-<span class="nn">/media/alpha/Projects/regilib/regilib/core/invertible_modules/bijective/node/continuous_flow.py</span> in <span class="ni">forward</span><span class="nt">(self, ds, t_span, estimate_trace)</span>
-<span class="g g-Whitespace">     </span><span class="mi">54</span>     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">t_span</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">estimate_trace</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">55</span>         <span class="n">x</span><span class="p">,</span> <span class="n">t_span</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prep_integration</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">t_span</span><span class="p">,</span> <span class="n">estimate_trace</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">56</span>         <span class="n">t_eval</span><span class="p">,</span> <span class="n">sol</span> <span class="o">=</span>  <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t_span</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">57</span>         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_t_eval</span><span class="p">:</span> <span class="k">return</span> <span class="n">t_eval</span><span class="p">,</span> <span class="n">sol</span>
-<span class="g g-Whitespace">     </span><span class="mi">58</span>         <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="n">sol</span>
-
-<span class="nn">~/.conda/envs/pdm_tutorial/lib/python3.8/site-packages/torchdyn/core/problems.py</span> in <span class="ni">forward</span><span class="nt">(self, x, t_span)</span>
-<span class="g g-Whitespace">     </span><span class="mi">77</span>     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">t_span</span><span class="p">:</span><span class="n">Tensor</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">78</span>         <span class="s2">&quot;For safety redirects to intended method `odeint`&quot;</span>
-<span class="ne">---&gt; </span><span class="mi">79</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">odeint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t_span</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">80</span> 
-<span class="g g-Whitespace">     </span><span class="mi">81</span>     <span class="k">def</span> <span class="nf">_prep_odeint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-<span class="nn">~/.conda/envs/pdm_tutorial/lib/python3.8/site-packages/torchdyn/core/problems.py</span> in <span class="ni">odeint</span><span class="nt">(self, x, t_span)</span>
-<span class="g g-Whitespace">     </span><span class="mi">71</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_prep_odeint</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">72</span>         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensalg</span> <span class="o">==</span> <span class="s1">&#39;autograd&#39;</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">73</span>             <span class="k">return</span> <span class="n">odeint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vf</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t_span</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rtol</span><span class="p">,</span> <span class="n">interpolator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">74</span>         <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">75</span>             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">autograd_function</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vf_params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t_span</span><span class="p">)</span>
-
-<span class="nn">~/.conda/envs/pdm_tutorial/lib/python3.8/site-packages/torchdyn/numerics/odeint.py</span> in <span class="ni">odeint</span><span class="nt">(f, x, t_span, solver, atol, rtol, t_stops, verbose, interpolator, return_all_eval, seminorm)</span>
-<span class="g g-Whitespace">     </span><span class="mi">86</span>                         <span class="n">k1</span> <span class="o">=</span> <span class="n">f_</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">87</span>                         <span class="n">dt</span> <span class="o">=</span> <span class="n">init_step</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">k1</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">solver</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">88</span>                         <span class="k">return</span> <span class="n">_adaptive_odeint</span><span class="p">(</span><span class="n">f_</span><span class="p">,</span> <span class="n">k1</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">t_span</span><span class="p">,</span> <span class="n">solver</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="p">,</span> <span class="n">interpolator</span><span class="p">,</span> <span class="n">return_all_eval</span><span class="p">,</span> <span class="n">seminorm</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">89</span> 
-<span class="g g-Whitespace">     </span><span class="mi">90</span> 
-
-<span class="nn">~/.conda/envs/pdm_tutorial/lib/python3.8/site-packages/torchdyn/numerics/odeint.py</span> in <span class="ni">_adaptive_odeint</span><span class="nt">(f, k1, x, dt, t_span, solver, atol, rtol, interpolator, return_all_eval, seminorm)</span>
-<span class="g g-Whitespace">    </span><span class="mi">356</span>                                         <span class="n">dt</span> <span class="o">=</span> <span class="n">t_eval</span><span class="p">[</span><span class="n">ckpt_counter</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span>
-<span class="g g-Whitespace">    </span><span class="mi">357</span> 
-<span class="ne">--&gt; </span><span class="mi">358</span>                 <span class="n">f_new</span><span class="p">,</span> <span class="n">x_new</span><span class="p">,</span> <span class="n">x_err</span><span class="p">,</span> <span class="n">stages</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">k1</span><span class="o">=</span><span class="n">k1</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">359</span>                 <span class="c1">################# compute error #############################</span>
-<span class="g g-Whitespace">    </span><span class="mi">360</span>                 <span class="k">if</span> <span class="n">seminorm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-
-<span class="nn">~/.conda/envs/pdm_tutorial/lib/python3.8/site-packages/torchdyn/numerics/solvers.py</span> in <span class="ni">step</span><span class="nt">(self, f, x, t, dt, k1)</span>
-<span class="g g-Whitespace">    </span><span class="mi">140</span>         <span class="n">k5</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">dt</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">k1</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">k2</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">k3</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">k4</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">141</span>         <span class="n">k6</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">dt</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">k1</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">k2</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">k3</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">k4</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">k5</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">142</span>         <span class="n">k7</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">*</span> <span class="n">dt</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">k1</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">k2</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">k3</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">k4</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">k5</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="o">*</span> <span class="n">k6</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">143</span>         <span class="n">x_sol</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="p">(</span><span class="n">bsol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">k1</span> <span class="o">+</span> <span class="n">bsol</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">k2</span> <span class="o">+</span> <span class="n">bsol</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">k3</span> <span class="o">+</span> <span class="n">bsol</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">k4</span> <span class="o">+</span> <span class="n">bsol</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">k5</span> <span class="o">+</span> <span class="n">bsol</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">*</span> <span class="n">k6</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">144</span>         <span class="n">err</span> <span class="o">=</span> <span class="n">berr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">k1</span> <span class="o">+</span> <span class="n">berr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">k2</span> <span class="o">+</span> <span class="n">berr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">k3</span> <span class="o">+</span> <span class="n">berr</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">k4</span> <span class="o">+</span> <span class="n">berr</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">k5</span> <span class="o">+</span> <span class="n">berr</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">*</span> <span class="n">k6</span> <span class="o">+</span> <span class="n">berr</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">*</span> <span class="n">k7</span>
-
-<span class="nn">~/.conda/envs/pdm_tutorial/lib/python3.8/site-packages/torch/nn/modules/module.py</span> in <span class="ni">_call_impl</span><span class="nt">(self, *input, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1100</span>         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backward_hooks</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_hooks</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_pre_hooks</span> <span class="ow">or</span> <span class="n">_global_backward_hooks</span>
-<span class="g g-Whitespace">   </span><span class="mi">1101</span>                 <span class="ow">or</span> <span class="n">_global_forward_hooks</span> <span class="ow">or</span> <span class="n">_global_forward_pre_hooks</span><span class="p">):</span>
-<span class="ne">-&gt; </span><span class="mi">1102</span>             <span class="k">return</span> <span class="n">forward_call</span><span class="p">(</span><span class="o">*</span><span class="nb">input</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1103</span>         <span class="c1"># Do not call functions when jit is used</span>
-<span class="g g-Whitespace">   </span><span class="mi">1104</span>         <span class="n">full_backward_hooks</span><span class="p">,</span> <span class="n">non_full_backward_hooks</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-
-<span class="nn">~/.conda/envs/pdm_tutorial/lib/python3.8/site-packages/torchdyn/core/defunc.py</span> in <span class="ni">forward</span><span class="nt">(self, t, x)</span>
-<span class="g g-Whitespace">     </span><span class="mi">75</span>         <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">76</span>             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">higher_order_forward</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">77</span>             <span class="k">else</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vf</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">78</span>             <span class="k">return</span> <span class="n">x</span>
-<span class="g g-Whitespace">     </span><span class="mi">79</span> 
-
-<span class="nn">~/.conda/envs/pdm_tutorial/lib/python3.8/site-packages/torch/nn/modules/module.py</span> in <span class="ni">_call_impl</span><span class="nt">(self, *input, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1100</span>         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backward_hooks</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_hooks</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_pre_hooks</span> <span class="ow">or</span> <span class="n">_global_backward_hooks</span>
-<span class="g g-Whitespace">   </span><span class="mi">1101</span>                 <span class="ow">or</span> <span class="n">_global_forward_hooks</span> <span class="ow">or</span> <span class="n">_global_forward_pre_hooks</span><span class="p">):</span>
-<span class="ne">-&gt; </span><span class="mi">1102</span>             <span class="k">return</span> <span class="n">forward_call</span><span class="p">(</span><span class="o">*</span><span class="nb">input</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1103</span>         <span class="c1"># Do not call functions when jit is used</span>
-<span class="g g-Whitespace">   </span><span class="mi">1104</span>         <span class="n">full_backward_hooks</span><span class="p">,</span> <span class="n">non_full_backward_hooks</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-
-<span class="nn">/media/alpha/Projects/regilib/regilib/core/dynamics/dynamics.py</span> in <span class="ni">forward</span><span class="nt">(self, t, x)</span>
-<span class="g g-Whitespace">     </span><span class="mi">27</span>                 <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, not valid for Dynamics.forward call&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
-<span class="g g-Whitespace">     </span><span class="mi">28</span> 
-<span class="ne">---&gt; </span><span class="mi">29</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">30</span> 
-<span class="g g-Whitespace">     </span><span class="mi">31</span> 
-
-<span class="nn">/media/alpha/Projects/regilib/regilib/core/dynamics/dynamics.py</span> in <span class="ni">forward_</span><span class="nt">(self, ds, estimate_trace)</span>
-<span class="g g-Whitespace">    </span><span class="mi">161</span> 
-<span class="g g-Whitespace">    </span><span class="mi">162</span>             <span class="c1"># compute/approximate trace</span>
-<span class="ne">--&gt; </span><span class="mi">163</span>             <span class="n">neg_l_dot</span><span class="p">,</span> <span class="n">e_dzdx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_trace</span><span class="p">(</span><span class="n">z_dot</span><span class="p">,</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">],</span> <span class="n">estimate_trace</span><span class="p">,</span> <span class="n">include_e_dzdx</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">164</span> 
-<span class="g g-Whitespace">    </span><span class="mi">165</span>             <span class="c1"># kinetic energy</span>
-
-<span class="nn">/media/alpha/Projects/regilib/regilib/core/dynamics/dynamics.py</span> in <span class="ni">compute_trace</span><span class="nt">(self, z_dot, z, estimate_trace, include_e_dzdx)</span>
-<span class="g g-Whitespace">    </span><span class="mi">112</span>                 <span class="n">z_dot</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">noise</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">113</span>         <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">114</span>             <span class="n">e_dzdx</span><span class="p">,</span> <span class="n">divergence</span> <span class="o">=</span> <span class="n">autograd_trace</span><span class="p">(</span><span class="n">z_dot</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">include_e_dzdx</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">115</span> 
-<span class="g g-Whitespace">    </span><span class="mi">116</span>         <span class="k">if</span> <span class="n">include_e_dzdx</span><span class="p">:</span> <span class="k">return</span> <span class="o">-</span><span class="n">divergence</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">e_dzdx</span>
-
-<span class="nn">/media/alpha/Projects/regilib/regilib/core/trace_estimators.py</span> in <span class="ni">autograd_trace</span><span class="nt">(x_out, x_in, include_e_dz_dx)</span>
-<span class="g g-Whitespace">     </span><span class="mi">38</span>     <span class="k">if</span> <span class="n">include_e_dz_dx</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">39</span>         <span class="n">J</span> <span class="o">=</span> <span class="n">batch_jacobian</span><span class="p">(</span><span class="n">x_out</span><span class="p">,</span> <span class="n">x_in</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">40</span>         <span class="n">trJ</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">j</span><span class="o">.</span><span class="n">trace</span><span class="p">()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">J</span><span class="p">])</span>
-<span class="g g-Whitespace">     </span><span class="mi">41</span>         <span class="n">e_dzdx</span> <span class="o">=</span> <span class="n">J</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">J</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">42</span>     <span class="k">else</span><span class="p">:</span>
-
-<span class="nn">~/.conda/envs/pdm_tutorial/lib/python3.8/site-packages/torch/_tensor.py</span> in <span class="ni">__iter__</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">646</span>                           <span class="s1">&#39;iterations executed (and might lead to errors or silently give &#39;</span>
-<span class="g g-Whitespace">    </span><span class="mi">647</span>                           <span class="s1">&#39;incorrect results).&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">TracerWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">648</span>         <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-<span class="g g-Whitespace">    </span><span class="mi">649</span> 
-<span class="g g-Whitespace">    </span><span class="mi">650</span>     <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
+<span class="c1"># unnormalise the data and compute the change in density</span>
+<span class="n">un_normalise</span> <span class="o">=</span> <span class="n">AffineTransform</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">dataset</span><span class="o">.</span><span class="n">_std</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">un_normalise</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">DynamicalState</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> <span class="n">log_prob</span><span class="o">=</span><span class="n">log_likelihood</span><span class="o">.</span><span class="n">clone</span><span class="p">()))</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_log_likelihood</span> <span class="o">=</span> <span class="n">log_likelihood</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_log_likelihood</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
 <span class="k">if</span> <span class="n">result_save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;density.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -900,14 +745,14 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(7.8780)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(0.2716)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_density</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">log_likelihood</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_density</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">data</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -921,6 +766,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_generated_samples</span>
+<span class="kn">from</span> <span class="nn">regilib.core.invertible_modules.bijective</span> <span class="kn">import</span> <span class="n">AffineTransform</span>
 </pre></div>
 </div>
 </div>
@@ -929,13 +775,17 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">generated_samples</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample_posterior</span><span class="p">(</span><span class="mi">100</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">generated_samples_log_likelihood</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">generated_samples</span><span class="p">)</span>
+
+<span class="c1"># unnormalise the data and compute the change in density</span>
+<span class="n">un_normalise</span> <span class="o">=</span> <span class="n">AffineTransform</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">dataset</span><span class="o">.</span><span class="n">_std</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">un_normalise</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">DynamicalState</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">generated_samples</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> <span class="n">log_prob</span><span class="o">=</span><span class="n">generated_samples_log_likelihood</span><span class="o">.</span><span class="n">clone</span><span class="p">()))</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_generated_samples</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">generated_samples</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">generated_samples_log_likelihood</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_generated_samples</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">data</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -996,8 +846,8 @@
 </div>
 <div class="section" id="extra">
 <h2>Extra<a class="headerlink" href="#extra" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="input-reconstruction-3d">
-<h3>Input reconstruction (3D)<a class="headerlink" href="#input-reconstruction-3d" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="input-representation-3d">
+<h3>Input Representation (3D)<a class="headerlink" href="#input-representation-3d" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
@@ -1029,11 +879,11 @@
 <span class="n">_</span> <span class="o">=</span> <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">window_size</span><span class="o">=</span><span class="p">[</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">])</span>
 
 <span class="k">if</span> <span class="n">result_save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;3d_reconstruction.png&#39;</span><span class="p">))</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;3d_base_representation.png&#39;</span><span class="p">))</span>
     <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
-        <span class="s1">&#39;reconstructed_state&#39;</span><span class="p">:</span> <span class="n">z</span><span class="p">,</span>
+        <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="n">z</span><span class="p">,</span>
         <span class="s1">&#39;index_colors&#39;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">index_colors</span>
-    <span class="p">},</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;3d_reconstruction.obj&#39;</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">))</span>
+    <span class="p">},</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;3d_base_representation.obj&#39;</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>

@@ -107,27 +107,15 @@
    Setup Guide
   </a>
  </li>
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1">
   <a class="reference internal" href="../1_intro/datasets/0_datasets.html">
    Datasets
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1_intro/datasets/1_swiss_roll.html">
-     Swiss Roll Dataset
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1_intro/datasets/2_skull.html">
-     Skull Dataset Experiment
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../1_intro/datasets/1_swiss_roll.html">
+   Swiss Roll Dataset
+  </a>
  </li>
 </ul>
 <p class="caption">
@@ -143,7 +131,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="2_LDDMM.html">
-   Large Deformation Diffeomorphic Metric Mapping and PCA
+   Large Deformation Diffeomorphic Metric Mapping and US
   </a>
  </li>
  <li class="toctree-l1">
@@ -398,6 +386,7 @@
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
 <span class="kn">from</span> <span class="nn">pdmtut.core</span> <span class="kn">import</span> <span class="n">GenerativeModel</span>
 <span class="kn">from</span> <span class="nn">pytorch_lightning</span> <span class="kn">import</span> <span class="n">loggers</span> <span class="k">as</span> <span class="n">pl_loggers</span>
+<span class="kn">from</span> <span class="nn">regilib.core.dynamics.dynamical_state</span> <span class="kn">import</span> <span class="n">DynamicalState</span>
 </pre></div>
 </div>
 </div>
@@ -616,17 +605,14 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reusing TensorBoard on port 6009 (pid 20046), started 0:19:14 ago. (Use &#39;!kill 20046&#39; to kill it.)
-</pre></div>
-</div>
 <div class="output text_html">
-<iframe id="tensorboard-frame-2c13662dab38c05d" width="100%" height="800" frameborder="0">
+<iframe id="tensorboard-frame-f74f62d9f7870858" width="100%" height="800" frameborder="0">
 </iframe>
 <script>
   (function() {
-    const frame = document.getElementById("tensorboard-frame-2c13662dab38c05d");
+    const frame = document.getElementById("tensorboard-frame-f74f62d9f7870858");
     const url = new URL("/", window.location);
-    const port = 6009;
+    const port = 6008;
     if (port) {
       url.port = port;
     }
@@ -715,6 +701,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_density</span>
+<span class="kn">from</span> <span class="nn">regilib.core.invertible_modules.bijective</span> <span class="kn">import</span> <span class="n">AffineTransform</span>
 </pre></div>
 </div>
 </div>
@@ -722,13 +709,17 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">log_likelihood</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># unnormalise the data and compute the change in density</span>
+<span class="n">un_normalise</span> <span class="o">=</span> <span class="n">AffineTransform</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">dataset</span><span class="o">.</span><span class="n">_std</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">un_normalise</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">DynamicalState</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> <span class="n">log_prob</span><span class="o">=</span><span class="n">log_likelihood</span><span class="o">.</span><span class="n">clone</span><span class="p">()))</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_log_likelihood</span> <span class="o">=</span> <span class="n">log_likelihood</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_log_likelihood</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
 <span class="k">if</span> <span class="n">result_save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;density.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -739,14 +730,14 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(-0.0095)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(-7.6160)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_density</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">log_likelihood</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_density</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">data</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -760,6 +751,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_generated_samples</span>
+<span class="kn">from</span> <span class="nn">regilib.core.invertible_modules.bijective</span> <span class="kn">import</span> <span class="n">AffineTransform</span>
 </pre></div>
 </div>
 </div>
@@ -768,13 +760,17 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">generated_samples</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample_posterior</span><span class="p">(</span><span class="mi">100</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">generated_samples_log_likelihood</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">generated_samples</span><span class="p">)</span>
+
+<span class="c1"># unnormalise the data and compute the change in density</span>
+<span class="n">un_normalise</span> <span class="o">=</span> <span class="n">AffineTransform</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">dataset</span><span class="o">.</span><span class="n">_std</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">un_normalise</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">DynamicalState</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">generated_samples</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> <span class="n">log_prob</span><span class="o">=</span><span class="n">generated_samples_log_likelihood</span><span class="o">.</span><span class="n">clone</span><span class="p">()))</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_generated_samples</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">generated_samples</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">generated_samples_log_likelihood</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_generated_samples</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">data</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -888,91 +884,47 @@
 <h3>Energy space<a class="headerlink" href="#energy-space" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uniform_state</span><span class="p">,</span> <span class="n">uniform_log_prob</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sample_points_uniformly</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">200</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">200</span><span class="p">)),</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_energy_space</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="c1"># get uniform data surface</span>
+    <span class="n">uniform_state</span><span class="p">,</span> <span class="n">uniform_log_prob</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sample_points_uniformly</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+    
+    <span class="c1"># construct subspace</span>
+    <span class="n">point_grid</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">bound</span><span class="p">,</span><span class="n">bound</span><span class="p">,</span><span class="n">steps</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">bound</span><span class="p">,</span><span class="n">bound</span><span class="p">,</span><span class="n">steps</span><span class="p">)))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unbind</span><span class="p">())</span>
+    <span class="n">point_grid</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">point_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">point_grid_plane</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">point_grid</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># compute energy for every point in subspace</span>
+    <span class="n">energy_plane</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">beta_free_energy</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">normalise_scale</span><span class="p">(</span><span class="n">point_grid_plane</span><span class="p">))</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+    
+    <span class="c1"># plot the plane</span>
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="p">(</span><span class="n">point_grid_plane</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">render_points_as_spheres</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">point_size</span><span class="o">=</span><span class="mf">7.5</span><span class="p">,</span> <span class="n">scalars</span><span class="o">=</span><span class="n">energy_plane</span> <span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">[</span><span class="n">energy_plane</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">energy_plane</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span>
 
-<span class="c1"># X-Y plane</span>
-<span class="n">x_y_point_grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">point_grid</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">point_grid</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">point_grid</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">x_y_energy</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">beta_free_energy</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">normalise_scale</span><span class="p">(</span><span class="n">x_y_point_grid</span><span class="p">))</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">pv</span><span class="o">.</span><span class="n">StructuredGrid</span><span class="p">(</span><span class="o">*</span><span class="n">uniform_state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">)</span>
 
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="p">(</span><span class="n">x_y_point_grid</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">render_points_as_spheres</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                    <span class="n">point_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scalars</span><span class="o">=</span><span class="n">x_y_energy</span> <span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">[</span><span class="n">x_y_energy</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x_y_energy</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span>
-
-<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">pv</span><span class="o">.</span><span class="n">StructuredGrid</span><span class="p">(</span><span class="o">*</span><span class="n">uniform_state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">)</span>
-
-<span class="n">plotter</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">window_size</span><span class="o">=</span><span class="p">[</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">])</span>
+    <span class="n">cam_pos</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">cam_pos</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="mi">60</span>
+    
+    <span class="n">plotter</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="p">[</span><span class="n">cam_pos</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">window_size</span><span class="o">=</span><span class="p">[</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">])</span>
 
 
-<span class="k">if</span> <span class="n">result_save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;energy_ambient_XY.png&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/5_EBM_40_0.png" src="../../_images/5_EBM_40_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">200</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">200</span><span class="p">)),</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">file_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">))</span>
 
-<span class="c1"># X-Z plane</span>
-<span class="n">x_y_point_grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">point_grid</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">point_grid</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">point_grid</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">x_y_energy</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">beta_free_energy</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">normalise_scale</span><span class="p">(</span><span class="n">x_y_point_grid</span><span class="p">))</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
 
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="p">(</span><span class="n">x_y_point_grid</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">render_points_as_spheres</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                    <span class="n">point_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scalars</span><span class="o">=</span><span class="n">x_y_energy</span> <span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">[</span><span class="n">x_y_energy</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x_y_energy</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span>
-
-<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">pv</span><span class="o">.</span><span class="n">StructuredGrid</span><span class="p">(</span><span class="o">*</span><span class="n">uniform_state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">)</span>
-
-<span class="n">plotter</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">window_size</span><span class="o">=</span><span class="p">[</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">])</span>
-
-<span class="k">if</span> <span class="n">result_save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;energy_ambient_XZ.png&#39;</span><span class="p">))</span>
+<span class="n">plot_energy_space</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;energy_ambient_XY.png&#39;</span><span class="p">)</span>
+<span class="n">plot_energy_space</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;energy_ambient_XZ.png&#39;</span><span class="p">)</span>
+<span class="n">plot_energy_space</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;energy_ambient_YZ.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/5_EBM_41_0.png" src="../../_images/5_EBM_41_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">200</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">200</span><span class="p">)),</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="c1"># Y-Z plane</span>
-<span class="n">x_y_point_grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">point_grid</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">point_grid</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">point_grid</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">x_y_energy</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">beta_free_energy</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">normalise_scale</span><span class="p">(</span><span class="n">x_y_point_grid</span><span class="p">))</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="p">(</span><span class="n">x_y_point_grid</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">render_points_as_spheres</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                    <span class="n">point_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scalars</span><span class="o">=</span><span class="n">x_y_energy</span> <span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">[</span><span class="n">x_y_energy</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x_y_energy</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span>
-
-<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">pv</span><span class="o">.</span><span class="n">StructuredGrid</span><span class="p">(</span><span class="o">*</span><span class="n">uniform_state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">)</span>
-
-<span class="n">plotter</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">80</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">window_size</span><span class="o">=</span><span class="p">[</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">])</span>
-
-<span class="k">if</span> <span class="n">result_save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;energy_ambient_YZ.png&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/5_EBM_42_0.png" src="../../_images/5_EBM_42_0.png" />
+<img alt="../../_images/5_EBM_39_0.png" src="../../_images/5_EBM_39_0.png" />
+<img alt="../../_images/5_EBM_39_1.png" src="../../_images/5_EBM_39_1.png" />
+<img alt="../../_images/5_EBM_39_2.png" src="../../_images/5_EBM_39_2.png" />
 </div>
 </div>
 </div>

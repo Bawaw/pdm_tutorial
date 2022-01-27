@@ -107,27 +107,15 @@
    Setup Guide
   </a>
  </li>
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1">
   <a class="reference internal" href="../1_intro/datasets/0_datasets.html">
    Datasets
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1_intro/datasets/1_swiss_roll.html">
-     Swiss Roll Dataset
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1_intro/datasets/2_skull.html">
-     Skull Dataset Experiment
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../1_intro/datasets/1_swiss_roll.html">
+   Swiss Roll Dataset
+  </a>
  </li>
 </ul>
 <p class="caption">
@@ -143,7 +131,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="2_LDDMM.html">
-   Large Deformation Diffeomorphic Metric Mapping and PCA
+   Large Deformation Diffeomorphic Metric Mapping and US
   </a>
  </li>
  <li class="toctree-l1">
@@ -355,13 +343,13 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#input-reconstruction-3d-c-0-1">
-     Input reconstruction (3D - c=0.1)
+    <a class="reference internal nav-link" href="#input-representation-3d">
+     Input Representation (3D)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     Input reconstruction (3D - c=0.1)
+    <a class="reference internal nav-link" href="#input-representation-3d-c-0-1">
+     Input Representation (3D - c=0.1)
     </a>
    </li>
   </ul>
@@ -691,13 +679,13 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html">
-<iframe id="tensorboard-frame-110143ed4e9d8d45" width="100%" height="800" frameborder="0">
+<iframe id="tensorboard-frame-ade1ad86f8f040c2" width="100%" height="800" frameborder="0">
 </iframe>
 <script>
   (function() {
-    const frame = document.getElementById("tensorboard-frame-110143ed4e9d8d45");
+    const frame = document.getElementById("tensorboard-frame-ade1ad86f8f040c2");
     const url = new URL("/", window.location);
-    const port = 6011;
+    const port = 6008;
     if (port) {
       url.port = port;
     }
@@ -798,6 +786,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_density</span>
+<span class="kn">from</span> <span class="nn">regilib.core.invertible_modules.bijective</span> <span class="kn">import</span> <span class="n">AffineTransform</span>
 </pre></div>
 </div>
 </div>
@@ -805,6 +794,10 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">log_likelihood</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># unnormalise the data and compute the change in density</span>
+<span class="n">un_normalise</span> <span class="o">=</span> <span class="n">AffineTransform</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">dataset</span><span class="o">.</span><span class="n">_std</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">un_normalise</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">DynamicalState</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> <span class="n">log_prob</span><span class="o">=</span><span class="n">log_likelihood</span><span class="o">.</span><span class="n">clone</span><span class="p">()))</span>
 </pre></div>
 </div>
 </div>
@@ -817,7 +810,7 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_log_likelihood</span> <span class="o">=</span> <span class="n">log_likelihood</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_log_likelihood</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
 <span class="k">if</span> <span class="n">result_save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;density.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -828,14 +821,14 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(3.4731)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(-4.1334)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_density</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">log_likelihood</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_density</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">data</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -849,6 +842,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_generated_samples</span>
+<span class="kn">from</span> <span class="nn">regilib.core.invertible_modules.bijective</span> <span class="kn">import</span> <span class="n">AffineTransform</span>
 </pre></div>
 </div>
 </div>
@@ -857,13 +851,17 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">generated_samples</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample_posterior</span><span class="p">(</span><span class="mi">100</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">generated_samples_log_likelihood</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">generated_samples</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># unnormalise the data and compute the change in density</span>
+<span class="n">un_normalise</span> <span class="o">=</span> <span class="n">AffineTransform</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">dataset</span><span class="o">.</span><span class="n">_std</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">un_normalise</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">DynamicalState</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">generated_samples</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> <span class="n">log_prob</span><span class="o">=</span><span class="n">generated_samples_log_likelihood</span><span class="o">.</span><span class="n">clone</span><span class="p">()))</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_generated_samples</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">unnormalise_scale</span><span class="p">(</span><span class="n">generated_samples</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">generated_samples_log_likelihood</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_generated_samples</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">data</span><span class="o">.</span><span class="n">log_prob</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">root</span><span class="o">=</span><span class="n">result_save_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -973,8 +971,8 @@
 </div>
 </div>
 </div>
-<div class="section" id="input-reconstruction-3d-c-0-1">
-<h3>Input reconstruction (3D - c=0.1)<a class="headerlink" href="#input-reconstruction-3d-c-0-1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="input-representation-3d">
+<h3>Input Representation (3D)<a class="headerlink" href="#input-representation-3d" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
@@ -1006,11 +1004,11 @@
 <span class="n">_</span> <span class="o">=</span> <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">window_size</span><span class="o">=</span><span class="p">[</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">])</span>
 
 <span class="k">if</span> <span class="n">result_save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;3d_reconstruction_c_0.png&#39;</span><span class="p">))</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;3d_base_representation.png&#39;</span><span class="p">))</span>
     <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
         <span class="s1">&#39;reconstructed_state&#39;</span><span class="p">:</span> <span class="n">z</span><span class="p">,</span>
         <span class="s1">&#39;index_colors&#39;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">index_colors</span>
-    <span class="p">},</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;3d_reconstruction_c_0.obj&#39;</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">))</span>
+    <span class="p">},</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;3d_base_representation.obj&#39;</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1019,8 +1017,8 @@
 </div>
 </div>
 </div>
-<div class="section" id="id1">
-<h3>Input reconstruction (3D - c=0.1)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="input-representation-3d-c-0-1">
+<h3>Input Representation (3D - c=0.1)<a class="headerlink" href="#input-representation-3d-c-0-1" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
@@ -1052,11 +1050,11 @@
 <span class="n">_</span> <span class="o">=</span> <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">window_size</span><span class="o">=</span><span class="p">[</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">])</span>
 
 <span class="k">if</span> <span class="n">result_save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;3d_reconstruction_c_01.png&#39;</span><span class="p">))</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;3d_base_representation_c_01.png&#39;</span><span class="p">))</span>
     <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
         <span class="s1">&#39;reconstructed_state&#39;</span><span class="p">:</span> <span class="n">z</span><span class="p">,</span>
         <span class="s1">&#39;index_colors&#39;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">index_colors</span>
-    <span class="p">},</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;3d_reconstruction_c_01.obj&#39;</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">))</span>
+    <span class="p">},</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;3d_base_representation_c_01.obj&#39;</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
