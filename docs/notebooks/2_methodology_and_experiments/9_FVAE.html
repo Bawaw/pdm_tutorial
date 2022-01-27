@@ -42,8 +42,6 @@
     <script src="../../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -771,12 +769,15 @@
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reusing TensorBoard on port 6008 (pid 112026), started 0:09:19 ago. (Use &#39;!kill 112026&#39; to kill it.)
+</pre></div>
+</div>
 <div class="output text_html">
-<iframe id="tensorboard-frame-a4dd77271eff7edf" width="100%" height="800" frameborder="0">
+<iframe id="tensorboard-frame-78fc665b2b2d27ad" width="100%" height="800" frameborder="0">
 </iframe>
 <script>
   (function() {
-    const frame = document.getElementById("tensorboard-frame-a4dd77271eff7edf");
+    const frame = document.getElementById("tensorboard-frame-78fc665b2b2d27ad");
     const url = new URL("/", window.location);
     const port = 6008;
     if (port) {
@@ -1017,7 +1018,8 @@
 <h3>Extra<a class="headerlink" href="#extra" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_representation</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">pdmtut.vis</span> <span class="kn">import</span> <span class="n">plot_representation</span>
 </pre></div>
 </div>
 </div>
@@ -1032,12 +1034,17 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_representation</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">index_colors</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">index_colors</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;extra&#39;</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plot_representation</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">index_colors</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">index_colors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_save_path</span><span class="p">,</span> <span class="s1">&#39;vae_base_representation.png&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/9_FVAE_37_0.png" src="../../_images/9_FVAE_37_0.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 432x288 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="../../_images/9_FVAE_37_1.png" src="../../_images/9_FVAE_37_1.png" />
 </div>
 </div>
 </div>
