@@ -83,17 +83,17 @@ def _plot_representation_2d(
             palette=[(1., 0, 0.), (0., 1, 0.), (0., 0, 1.)]
         )
 
-        if root is not None:
-            plt.savefig(os.path.join(root, 'base_representation.png'))
+    if root is not None:
+        plt.savefig(os.path.join(root, 'base_representation.png'))
 
-            pickle.dump({
-                'z_coordinates': z_coordinates,
-                'index_colors': index_colors,
-                'z_extremes': z_extremes,
-                'interpolate_background': interpolate_background
-            }, open(os.path.join(root, 'base_representation.obj'), 'wb'))
+        pickle.dump({
+            'z_coordinates': z_coordinates,
+            'index_colors': index_colors,
+            'z_extremes': z_extremes,
+            'interpolate_background': interpolate_background
+        }, open(os.path.join(root, 'base_representation.obj'), 'wb'))
 
-        if axis is None: plt.show()
+    if axis is None: plt.show()
 
 
 def _plot_panel(data, extreme_data, k1, k2, index_colors, ax):
